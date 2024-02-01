@@ -1,0 +1,2 @@
+uint8 number_leg
+hexapod_msgs/LegJoints position_leg

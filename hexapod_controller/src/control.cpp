@@ -91,7 +91,7 @@ Control::Control( void )
     imu_sub_ = nh_.subscribe<sensor_msgs::Imu>( "/imu/data", 1, &Control::imuCallback, this );
 
     // Topics we are publishing
-    sounds_pub_ = nh_.advertise<hexapod_msgs::Sounds>( "/sounds", 10 );
+    //sounds_pub_ = nh_.advertise<hexapod_msgs::Sounds>( "/sounds", 10 );
     joint_state_pub_ = nh_.advertise<sensor_msgs::JointState>( "/joints_to_gazebo", 10 );
     odom_pub_ = nh_.advertise<nav_msgs::Odometry>( "/odometry/calculated", 50 );
     twist_pub_ = nh_.advertise<geometry_msgs::TwistWithCovarianceStamped>( "/twist", 50 );
@@ -338,9 +338,9 @@ void Control::stateCallback( const std_msgs::BoolConstPtr &state_msg )
             body_.orientation.yaw = 0.0;
             body_.orientation.roll = 0.0;
             setHexActiveState( true );
-            sounds_.stand = true;
-            sounds_pub_.publish( sounds_ );
-            sounds_.stand = false;
+            //sounds_.stand = true;
+            //sounds_pub_.publish( sounds_ );
+            //sounds_.stand = false;
         }
     }
 
@@ -355,9 +355,9 @@ void Control::stateCallback( const std_msgs::BoolConstPtr &state_msg )
             body_.orientation.yaw = 0.0;
             body_.orientation.roll = 0.0;
             setHexActiveState( false );
-            sounds_.shut_down = true;
-            sounds_pub_.publish( sounds_ );
-            sounds_.shut_down = false;
+            //sounds_.shut_down = true;
+            //sounds_pub_.publish( sounds_ );
+            //sounds_.shut_down = false;
         }
     }
 }
@@ -403,9 +403,9 @@ void Control::imuCallback( const sensor_msgs::ImuConstPtr &imu_msg )
 
         if( ( std::abs( imu_roll_delta ) > MAX_BODY_ROLL_COMP ) || ( std::abs( imu_pitch_delta ) > MAX_BODY_PITCH_COMP ) )
         {
-            sounds_.auto_level = true;
-            sounds_pub_.publish( sounds_ );
-            sounds_.auto_level = false;
+            //sounds_.auto_level = true;
+            //sounds_pub_.publish( sounds_ );
+            //sounds_.auto_level = false;
         }
 
         if( imu_roll_delta < -COMPENSATE_TO_WITHIN )

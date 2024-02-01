@@ -3,7 +3,7 @@
      Commit Version: 1.6.0-1-g15f4949  Build Version: 1.6.7594.29634
      For more information, please see http://wiki.ros.org/sw_urdf_exporter -->
 <robot
-  name="Hexapod_urdf_v1">
+  name="spider_description">
   <link
     name="base_link">
     <inertial>
@@ -26,7 +26,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://Hexapod_urdf_v1/meshes/base_link.STL" />
+          filename="package://spider_description/meshes/base_link.STL" />
       </geometry>
       <material
         name="">
@@ -40,7 +40,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://Hexapod_urdf_v1/meshes/base_link.STL" />
+          filename="package://spider_description/meshes/base_link.STL" />
       </geometry>
     </collision>
   </link>
@@ -66,7 +66,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://Hexapod_urdf_v1/meshes/link_c1_lf.STL" />
+          filename="package://spider_description/meshes/link_c1_lf.STL" />
       </geometry>
       <material
         name="">
@@ -80,7 +80,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://Hexapod_urdf_v1/meshes/link_c1_lf.STL" />
+          filename="package://spider_description/meshes/link_c1_lf.STL" />
       </geometry>
     </collision>
   </link>
@@ -124,7 +124,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://Hexapod_urdf_v1/meshes/link_thigh_lf.STL" />
+          filename="package://spider_description/meshes/link_thigh_lf.STL" />
       </geometry>
       <material
         name="">
@@ -138,7 +138,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://Hexapod_urdf_v1/meshes/link_thigh_lf.STL" />
+          filename="package://spider_description/meshes/link_thigh_lf.STL" />
       </geometry>
     </collision>
   </link>
@@ -182,7 +182,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://Hexapod_urdf_v1/meshes/link_tibia_lf.STL" />
+          filename="package://spider_description/meshes/link_tibia_lf.STL" />
       </geometry>
       <material
         name="">
@@ -196,7 +196,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://Hexapod_urdf_v1/meshes/link_tibia_lf.STL" />
+          filename="package://spider_description/meshes/link_tibia_lf.STL" />
       </geometry>
     </collision>
   </link>
@@ -282,7 +282,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://Hexapod_urdf_v1/meshes/link_c1_rf.STL" />
+          filename="package://spider_description/meshes/link_c1_rf.STL" />
       </geometry>
       <material
         name="">
@@ -296,7 +296,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://Hexapod_urdf_v1/meshes/link_c1_rf.STL" />
+          filename="package://spider_description/meshes/link_c1_rf.STL" />
       </geometry>
     </collision>
   </link>
@@ -340,7 +340,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://Hexapod_urdf_v1/meshes/link_thigh_rf.STL" />
+          filename="package://spider_description/meshes/link_thigh_rf.STL" />
       </geometry>
       <material
         name="">
@@ -354,7 +354,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://Hexapod_urdf_v1/meshes/link_thigh_rf.STL" />
+          filename="package://spider_description/meshes/link_thigh_rf.STL" />
       </geometry>
     </collision>
   </link>
@@ -398,7 +398,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://Hexapod_urdf_v1/meshes/link_tibia_rf.STL" />
+          filename="package://spider_description/meshes/link_tibia_rf.STL" />
       </geometry>
       <material
         name="">
@@ -412,7 +412,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://Hexapod_urdf_v1/meshes/link_tibia_rf.STL" />
+          filename="package://spider_description/meshes/link_tibia_rf.STL" />
       </geometry>
     </collision>
   </link>
@@ -498,7 +498,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://Hexapod_urdf_v1/meshes/link_c1_lm.STL" />
+          filename="package://spider_description/meshes/link_c1_lm.STL" />
       </geometry>
       <material
         name="">
@@ -512,7 +512,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://Hexapod_urdf_v1/meshes/link_c1_lm.STL" />
+          filename="package://spider_description/meshes/link_c1_lm.STL" />
       </geometry>
     </collision>
   </link>
@@ -556,7 +556,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://Hexapod_urdf_v1/meshes/link_thigh_lm.STL" />
+          filename="package://spider_description/meshes/link_thigh_lm.STL" />
       </geometry>
       <material
         name="">
@@ -570,7 +570,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://Hexapod_urdf_v1/meshes/link_thigh_lm.STL" />
+          filename="package://spider_description/meshes/link_thigh_lm.STL" />
       </geometry>
     </collision>
   </link>
@@ -614,7 +614,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://Hexapod_urdf_v1/meshes/link_tibia_lm.STL" />
+          filename="package://spider_description/meshes/link_tibia_lm.STL" />
       </geometry>
       <material
         name="">
@@ -628,7 +628,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://Hexapod_urdf_v1/meshes/link_tibia_lm.STL" />
+          filename="package://spider_description/meshes/link_tibia_lm.STL" />
       </geometry>
     </collision>
   </link>
@@ -714,7 +714,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://Hexapod_urdf_v1/meshes/link_c1_rm.STL" />
+          filename="package://spider_description/meshes/link_c1_rm.STL" />
       </geometry>
       <material
         name="">
@@ -728,7 +728,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://Hexapod_urdf_v1/meshes/link_c1_rm.STL" />
+          filename="package://spider_description/meshes/link_c1_rm.STL" />
       </geometry>
     </collision>
   </link>
@@ -772,7 +772,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://Hexapod_urdf_v1/meshes/link_thigh_rm.STL" />
+          filename="package://spider_description/meshes/link_thigh_rm.STL" />
       </geometry>
       <material
         name="">
@@ -786,7 +786,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://Hexapod_urdf_v1/meshes/link_thigh_rm.STL" />
+          filename="package://spider_description/meshes/link_thigh_rm.STL" />
       </geometry>
     </collision>
   </link>
@@ -830,7 +830,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://Hexapod_urdf_v1/meshes/link_tibia_rm.STL" />
+          filename="package://spider_description/meshes/link_tibia_rm.STL" />
       </geometry>
       <material
         name="">
@@ -844,7 +844,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://Hexapod_urdf_v1/meshes/link_tibia_rm.STL" />
+          filename="package://spider_description/meshes/link_tibia_rm.STL" />
       </geometry>
     </collision>
   </link>
@@ -930,7 +930,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://Hexapod_urdf_v1/meshes/link_c1_lr.STL" />
+          filename="package://spider_description/meshes/link_c1_lr.STL" />
       </geometry>
       <material
         name="">
@@ -944,7 +944,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://Hexapod_urdf_v1/meshes/link_c1_lr.STL" />
+          filename="package://spider_description/meshes/link_c1_lr.STL" />
       </geometry>
     </collision>
   </link>
@@ -988,7 +988,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://Hexapod_urdf_v1/meshes/link_thigh_lr.STL" />
+          filename="package://spider_description/meshes/link_thigh_lr.STL" />
       </geometry>
       <material
         name="">
@@ -1002,7 +1002,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://Hexapod_urdf_v1/meshes/link_thigh_lr.STL" />
+          filename="package://spider_description/meshes/link_thigh_lr.STL" />
       </geometry>
     </collision>
   </link>
@@ -1046,7 +1046,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://Hexapod_urdf_v1/meshes/link_tibia_lr.STL" />
+          filename="package://spider_description/meshes/link_tibia_lr.STL" />
       </geometry>
       <material
         name="">
@@ -1060,7 +1060,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://Hexapod_urdf_v1/meshes/link_tibia_lr.STL" />
+          filename="package://spider_description/meshes/link_tibia_lr.STL" />
       </geometry>
     </collision>
   </link>
@@ -1151,7 +1151,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://Hexapod_urdf_v1/meshes/link_c1_rr.STL" />
+          filename="package://spider_description/meshes/link_c1_rr.STL" />
       </geometry>
       <material
         name="">
@@ -1165,7 +1165,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://Hexapod_urdf_v1/meshes/link_c1_rr.STL" />
+          filename="package://spider_description/meshes/link_c1_rr.STL" />
       </geometry>
     </collision>
   </link>
@@ -1209,7 +1209,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://Hexapod_urdf_v1/meshes/link_thigh_rr.STL" />
+          filename="package://spider_description/meshes/link_thigh_rr.STL" />
       </geometry>
       <material
         name="">
@@ -1223,7 +1223,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://Hexapod_urdf_v1/meshes/link_thigh_rr.STL" />
+          filename="package://spider_description/meshes/link_thigh_rr.STL" />
       </geometry>
     </collision>
   </link>
@@ -1309,7 +1309,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://Hexapod_urdf_v1/meshes/link_tibia_rr.STL" />
+          filename="package://spider_description/meshes/link_tibia_rr.STL" />
       </geometry>
       <material
         name="">
@@ -1323,7 +1323,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://Hexapod_urdf_v1/meshes/link_tibia_rr.STL" />
+          filename="package://spider_description/meshes/link_tibia_rr.STL" />
       </geometry>
     </collision>
   </link>

@@ -2,9 +2,9 @@
   <name>spider_description</name>
   <version>1.0.0</version>
   <description>
-    <p>URDF Description package for Hexapod_urdf_v1</p>
+    <p>URDF Description package for spider_description</p>
     <p>This package contains configuration data, 3D models and launch files
-for Hexapod_urdf_v1 robot</p>
+for spider_description robot</p>
   </description>
   <author>TODO</author>
   <maintainer email="TODO@email.com" />
