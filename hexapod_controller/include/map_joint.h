@@ -1,0 +1,21 @@
+std::vector<std::string> joints_names = {
+    "coxa_joint_RR",
+    "femur_joint_RR" ,
+    "tibia_joint_RR" ,
+    "coxa_joint_RM" ,
+    "femur_joint_RM" ,
+    "tibia_joint_RM" ,
+    "coxa_joint_RF" ,
+    "femur_joint_RF" ,
+    "tibia_joint_RF" ,
+    "coxa_joint_LR" ,
+    "femur_joint_LR" ,
+    "tibia_joint_LR" ,
+    "coxa_joint_LM",
+    "femur_joint_LM" ,
+    "tibia_joint_LM" ,
+    "coxa_joint_LF" ,
+    "femur_joint_LF" ,
+    "tibia_joint_LF" ,
+
+};
