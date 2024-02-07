@@ -62,7 +62,7 @@
 ## Инструкция 
 
      roslaunch spider_gazebo srider_gazebo.launch 
-     rosrun hexapod_controller hexapod_controller_gazebo 
+     rosrun hexapod_control_gazebo hexapod_control_gazebo 
      rosrun hexapod_controller hexapod_controller 
 
 
