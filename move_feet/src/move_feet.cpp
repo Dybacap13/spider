@@ -15,7 +15,7 @@ MoveFeet::MoveFeet(ros::NodeHandle nh_): nh(nh_) {
 
     //body_sub = nh_.subscribe("/body_position", 5,  &MoveFeet::bodyCallback, this);
     //feet_position_sub = nh_.subscribe("/feet_position", 5,  &MoveFeet::feetPositionCallback, this);
-    //legs_sub = nh_.subscribe("/legs", 5,  &MoveFeet::legsCallback, this);
+    legs_sub = nh_.subscribe("/legs", 5,  &MoveFeet::legsCallback, this);
     move_feet_sub = nh_.subscribe("/move_feet", 5,  &MoveFeet::moveFeetCallback, this);
 
     move_feet_pub = nh_.advertise<hexapod_msgs::MoveFeet>("/control_gazebo_legs", 1000);

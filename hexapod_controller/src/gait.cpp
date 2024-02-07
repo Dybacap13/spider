@@ -78,14 +78,18 @@ void Gait::cyclePeriod( const geometry_msgs::Pose2D &base, hexapod_msgs::FeetPos
 
     for( int leg_index = 0; leg_index < NUMBER_OF_LEGS; leg_index++ )
     {
+
         // Lifts the leg and move it forward
         if( cycle_leg_number_[leg_index] == 0 && is_travelling_ == true )
         {
+
             period_distance = cos( cycle_period_ * PI / CYCLE_LENGTH );
             feet->foot[leg_index].position.x = base.x * period_distance;
             feet->foot[leg_index].position.y = base.y * period_distance;
             feet->foot[leg_index].position.z = LEG_LIFT_HEIGHT * period_height;
             feet->foot[leg_index].orientation.yaw = base.theta * period_distance;
+
+
         }
         // Moves legs backward pushing the body forward
         if( cycle_leg_number_[leg_index] == 1 )
@@ -95,6 +99,8 @@ void Gait::cyclePeriod( const geometry_msgs::Pose2D &base, hexapod_msgs::FeetPos
             feet->foot[leg_index].position.y = -base.y * period_distance;
             feet->foot[leg_index].position.z = 0;
             feet->foot[leg_index].orientation.yaw = -base.theta * period_distance;
+
+
         }
         if( cycle_leg_number_[leg_index] == 2 )
         {

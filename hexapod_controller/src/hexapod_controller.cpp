@@ -90,7 +90,7 @@ int main( int argc, char **argv )
         }
 
         // We are live and standing up
-        if( control.getHexActiveState() == true && control.getPrevHexActiveState() == true )
+        if( control.getHexActiveState() == true && control.getPrevHexActiveState() == true && control.getMoveFeetMode() == false)
         {
             // Gait Sequencer
             gait.gaitCycle( control.cmd_vel_, &control.feet_, &control.gait_vel_ );
@@ -108,6 +108,13 @@ int main( int argc, char **argv )
             // Set previous hex state of last loop so we know if we are shutting down on the next loop
             control.setPrevHexActiveState( true );
         }
+
+         if( control.getHexActiveState() == true && control.getPrevHexActiveState() == true  && control.getMoveFeetMode() == true){
+            ROS_INFO("Mode MoveFeet is ON.");
+            while (control.getMoveFeetMode() == true) {
+            }
+            ROS_INFO("Mode MoveFeet is OFF.");
+         }
 
         // Shutting down hex so let us do a gradual sit down and turn off torque
         if( control.getHexActiveState() == false && control.getPrevHexActiveState() == true )

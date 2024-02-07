@@ -1,2 +1,3 @@
 uint8 number_leg
+float64 cmd_vel
 hexapod_msgs/LegJoints position_leg

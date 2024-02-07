@@ -75,13 +75,11 @@ Trig Ik::getSinCos( double angle_rad )
 
 void Ik::calculateIK( const hexapod_msgs::FeetPositions &feet, const hexapod_msgs::Pose &body, hexapod_msgs::LegsJoints *legs, bool state )
 {
-    //std::cout << "***"<<std::endl;
-    //std::cout << "NUMBER_OF_LEGS = "<< NUMBER_OF_LEGS<<std::endl;
-    //std::cout << "***"<<std::endl;
+
     double sign = -1.0;
     for( int leg_index = 0; leg_index < NUMBER_OF_LEGS; leg_index++ )
     {
-         //std::cout << leg_index<<std::endl;
+
         if( leg_index <= 2 )
         {
             //sign = -1.0;
@@ -159,104 +157,14 @@ void Ik::calculateIK( const hexapod_msgs::FeetPositions &feet, const hexapod_msg
         // Resulting joint angles in radians.
         legs->leg[leg_index].coxa = atan2( feet_pos_x, feet_pos_y ) + INIT_COXA_ANGLE[leg_index];
         legs->leg[leg_index].femur = ( PI/2 ) - ( theta + angle_b );
-        //legs->leg[leg_index].tibia = ( PI/2 ) + angle_c;
+
         legs->leg[leg_index].tibia = ( PI/3) + angle_c;
 
 
 
         legs->leg[leg_index].tarsus = legs->leg[leg_index].femur + legs->leg[leg_index].tibia;
-        std::cout << " " << std::endl;
-        std::cout << "LEG = " << leg_index+1<< std::endl;
-        std::cout << "state = " << state<< std::endl;
-        std::cout << "feet_pos_x = " << feet_pos_x<< std::endl;
-        std::cout << "feet_pos_y = " << feet_pos_y<< std::endl;
-        std::cout << "feet_pos_z = " << feet_pos_z<< std::endl;
-        std::cout << "femur_to_tarsus = " << femur_to_tarsus<< std::endl;
-        std::cout << " " << std::endl;
-        std::cout << "___________________________________________________" << std::endl;
 
-         // std::cout << " " << std::endl;
-         // std::cout << "LEG = " << leg_index+1<< std::endl;
-         // std::cout << "coxa = " <<   legs->leg[leg_index].coxa<< std::endl;
+}
 
-         // std::cout << " " << std::endl;
-         // std::cout << "___________________________________________________" << std::endl;
-
-
-    }
-
-       //  // Calculate foot position
-       //  double feet_pos_x = -INIT_FOOT_POS_X[leg_index] + body.position.x - body_pos_x + feet.foot[leg_index].position.x;
-       //  double feet_pos_y =  INIT_FOOT_POS_Y[leg_index] + sign*( body.position.y - body_pos_y + feet.foot[leg_index].position.y );
-       //  double feet_pos_z =  INIT_FOOT_POS_Z[leg_index] - TARSUS_LENGTH + body.position.z - body_pos_z - feet.foot[leg_index].position.z;
-       //  std::cout << " " << std::endl;
-       //  std::cout << "LEG = " << leg_index+1<< std::endl;
-       //  std::cout << "feet_pos_x = " << feet_pos_x<< std::endl;
-       //  std::cout << "feet_pos_y = " << feet_pos_y<< std::endl;
-       //  std::cout << "feet_pos_z = " << feet_pos_z<< std::endl;
-       //  std::cout << " " << std::endl;
-       //  std::cout << "___________________________________________________" << std::endl;
-       //  // Length between the Root and Foot Position ...Pythagorean theorem
-       //  if (leg_index == 1 || leg_index == 4 ){
-       //            std::cout << "*** = "  << std::endl;
-       //      std::cout << "feet_pos_x = " <<feet_pos_x << std::endl;
-       //       std::cout << "feet_pos_y = " <<feet_pos_y << std::endl;
-       //       std::cout << "std::abs(feet_pos_x)- COXA_LENGTH = " <<std::abs(feet_pos_x)- COXA_LENGTH << std::endl;
-       //       std::cout << "*** = "  << std::endl;
-
-       //  }
-       //  double femur_to_tarsus = sqrt( pow( (std::abs(feet_pos_x)), 2 ) + pow( feet_pos_y, 2 ) )- COXA_LENGTH;
-       //   std::cout << "feet_pos_y = " <<feet_pos_y << std::endl;
-
-       //  if( std::abs( femur_to_tarsus ) > ( FEMUR_LENGTH + TIBIA_LENGTH ) )
-       //  {
-       //      ROS_FATAL("IK Solver cannot solve a foot position that is not within leg reach!!!");
-       //      ROS_FATAL("Shutting down so configuration can be fixed!!!");
-       //      ros::shutdown();
-       //      break;
-       //  }
-
-       //  // Length of the sides of the triangle formed by the femur, tibia and tarsus joints.
-       //  double side_a = FEMUR_LENGTH;
-       //  double side_a_sqr = pow( FEMUR_LENGTH, 2 );
-
-       //  double side_b = TIBIA_LENGTH;
-       //  double side_b_sqr = pow( TIBIA_LENGTH, 2 );
-
-       //  double side_c = sqrt( pow( femur_to_tarsus, 2 ) + pow( feet_pos_z, 2 ) );
-       //  double side_c_sqr = pow( side_c, 2 );
-
-       //  // We are using the law of cosines on the triangle formed by the femur, tibia and tarsus joints.
-       //  double angle_b = acos( ( side_a_sqr - side_b_sqr + side_c_sqr ) / ( 2.0 * side_a * side_c ) );
-       //  double angle_c = acos( ( side_a_sqr + side_b_sqr - side_c_sqr ) / ( 2.0 * side_a * side_b ) );
-
-       //  // Angle of line between the femur and Tarsus joints with respect to feet_pos_z.
-       // // double theta = atan2( femur_to_tarsus, feet_pos_z );
-
-       //  // Resulting joint angles in radians.
-       //  legs->leg[leg_index].coxa = atan2( feet_pos_x, feet_pos_y ) + INIT_COXA_ANGLE[leg_index];
-       //  legs->leg[leg_index].femur = - angle_c ;
-       //  legs->leg[leg_index].tibia =  angle_b;
-       //  legs->leg[leg_index].tarsus = legs->leg[leg_index].femur + legs->leg[leg_index].tibia;
-       //  std::cout << " " << std::endl;
-       //  std::cout << "LEG = " << leg_index+1<< std::endl;
-       //  // std::cout << "coxa = " << legs->leg[leg_index].coxa<< std::endl;
-       //  // std::cout << "femur = " << legs->leg[leg_index].femur<< std::endl;
-       //  // std::cout << "tibia = " << legs->leg[leg_index].tibia << std::endl;
-
-       //   std::cout << "femur_to_tarsus = " << femur_to_tarsus << std::endl;
-
-       //   std::cout << "side_a_sqr = " << side_a_sqr<< std::endl;
-       //   std::cout << "side_b_sqr = " << side_b_sqr<< std::endl;
-       //   std::cout << "side_c_sqr = " << side_c_sqr<< std::endl;
-
-       //   std::cout << "angle_b = arccos " << ( side_a_sqr - side_b_sqr + side_c_sqr ) / ( 2.0 * side_a * side_c ) << std::endl;
-       //      std::cout << "angle_c =arcos " <<( side_a_sqr + side_b_sqr - side_c_sqr ) / ( 2.0 * side_a * side_b ) << std::endl;
-       //      std::cout << "angle_b   " << angle_b << std::endl;
-       //         std::cout << "angle_c    " <<angle_c << std::endl;
-
-       //  std::cout << " " << std::endl;
-       //  std::cout << "___________________________________________________" << std::endl;
-    //}
 }
 

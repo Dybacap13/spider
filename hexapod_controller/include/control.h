@@ -77,6 +77,21 @@ class Control
         geometry_msgs::Twist gait_vel_;
         geometry_msgs::Twist cmd_vel_;
 
+
+        //Modes
+        bool getMoveFeetMode( void );
+        bool getWalkMode( void );
+
+        bool move_feet_mode;
+        bool move_walk_mode;
+
+        void moveFeetModeCallback( std_msgs::Bool msg);
+        void walkModeCallback( std_msgs::Bool msg);
+
+        ros::Subscriber move_feet_mode_sub;
+        ros::Subscriber walk_mode_sub;
+
+
     private:
         hexapod_msgs::Sounds sounds_; // Sound bool array
         std_msgs::Bool imu_override_; // Override body levelling for body manipulation
@@ -114,6 +129,8 @@ class Control
         void imuOverrideCallback( const std_msgs::BoolConstPtr &imu_override_msg );
         ros::Subscriber imu_sub_;
         void imuCallback( const sensor_msgs::ImuConstPtr &imu_msg );
+
+
 
         // Topics we are publishing
         ros::Publisher sounds_pub_;

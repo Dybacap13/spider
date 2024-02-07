@@ -90,6 +90,8 @@ Control::Control( void )
     imu_override_sub_ = nh_.subscribe<std_msgs::Bool>( "/imu/imu_override", 1, &Control::imuOverrideCallback, this );
     imu_sub_ = nh_.subscribe<sensor_msgs::Imu>( "/imu/data", 1, &Control::imuCallback, this );
 
+
+
     // Topics we are publishing
     //sounds_pub_ = nh_.advertise<hexapod_msgs::Sounds>( "/sounds", 10 );
     joint_state_pub_ = nh_.advertise<sensor_msgs::JointState>( "/joints_to_gazebo", 10 );
@@ -99,6 +101,14 @@ Control::Control( void )
     // Send service request to the imu to re-calibrate
     imu_calibrate_ = nh_.serviceClient<std_srvs::Empty>("/imu/calibrate");
     imu_calibrate_.call( calibrate_ );
+
+
+    //Modes
+    move_feet_mode = false;
+    move_walk_mode = false;
+
+    move_feet_mode_sub = nh_.subscribe<std_msgs::Bool>( "/move_feet_mode", 1, &Control::moveFeetModeCallback, this );
+    walk_mode_sub = nh_.subscribe<std_msgs::Bool>( "/walk_mode", 1, &Control::walkModeCallback, this );
 }
 
 //==============================================================================
@@ -123,6 +133,15 @@ void Control::setPrevHexActiveState( bool state )
 bool Control::getPrevHexActiveState( void )
 {
     return prev_hex_state_;
+}
+
+
+bool Control::getMoveFeetMode( void ){
+    return move_feet_mode;
+}
+
+bool Control::getWalkMode( void ){
+    return move_walk_mode;
 }
 
 //==============================================================================
@@ -459,3 +478,12 @@ void Control::partitionCmd_vel( geometry_msgs::Twist *cmd_vel )
     cmd_vel->angular.z = delta_th;
 }
 
+
+
+void Control::moveFeetModeCallback(std_msgs::Bool msg){
+    move_feet_mode = msg.data;
+}
+
+void Control::walkModeCallback(std_msgs::Bool msg){
+    move_walk_mode = msg.data;
+}

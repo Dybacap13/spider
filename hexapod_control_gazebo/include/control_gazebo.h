@@ -56,6 +56,8 @@ private:
   ros::Publisher pub_in_controller;
   ros::NodeHandle nh_;
   ros::Subscriber leg_gazebo_sub;
+  sensor_msgs::JointState current_state;
+
 
 
   std::string name__space = "/spider/";
@@ -93,55 +95,30 @@ void ControlGazebo::jointsToGazeboCallback(sensor_msgs::JointState msg_joint_sta
 
     }
     std::cout <<  "__________________________" << std::endl;
+    current_state =  msg_joint_state;
 }
 
 
 void ControlGazebo::legToGazeboCallback(hexapod_msgs::MoveFeet move_feet){
+
     std_msgs::Float64 coxa;
     std_msgs::Float64 femur;
     std_msgs::Float64 tibia;
+    int sing = -1;
 
-    coxa.data = move_feet.position_leg.coxa;
-    femur.data = move_feet.position_leg.femur;
-    tibia.data = move_feet.position_leg.tibia;
+    if (current_state.position[move_feet.number_leg * 3 + 1] < 0 ) int sing = 1;
 
-    switch (move_feet.number_leg) {
-        case 0:
-            publisher_joints_to_controller[joints_names[0]].publish(coxa);
-            publisher_joints_to_controller[joints_names[1]].publish(femur);
-            publisher_joints_to_controller[joints_names[2]].publish(tibia);
-            break;
-        case 1:
-            publisher_joints_to_controller[joints_names[3]].publish(coxa);
-            publisher_joints_to_controller[joints_names[4]].publish(femur);
-            publisher_joints_to_controller[joints_names[5]].publish(tibia);
-            break;
-        case 2:
-            publisher_joints_to_controller[joints_names[6]].publish(coxa);
-            publisher_joints_to_controller[joints_names[7]].publish(femur);
-            publisher_joints_to_controller[joints_names[8]].publish(tibia);
-            break;
-        case 3:
-            publisher_joints_to_controller[joints_names[9]].publish(coxa);
-            publisher_joints_to_controller[joints_names[10]].publish(femur);
-            publisher_joints_to_controller[joints_names[11]].publish(tibia);
-            break;
-        case 4:
-            publisher_joints_to_controller[joints_names[12]].publish(coxa);
-            publisher_joints_to_controller[joints_names[13]].publish(femur);
-            publisher_joints_to_controller[joints_names[14]].publish(tibia);
-            break;
-        case 5:
-            publisher_joints_to_controller[joints_names[15]].publish(coxa);
-            publisher_joints_to_controller[joints_names[16]].publish(femur);
-            publisher_joints_to_controller[joints_names[17]].publish(tibia);
-            break;
-
-        default:
-            std::cout << "Unknown number legs " << move_feet.number_leg << std::endl;
+    coxa.data = current_state.position[move_feet.number_leg * 3] * (-1) + move_feet.cmd_vel;
+    femur.data = current_state.position[move_feet.number_leg * 3 + 1] * (-1) +  ( 0.2 * sing);
+    tibia.data = current_state.position[move_feet.number_leg * 3 + 2] * (-1);
 
 
-    }
+    publisher_joints_to_controller[joints_names[move_feet.number_leg * 3 + 1]].publish(femur);
+    publisher_joints_to_controller[joints_names[move_feet.number_leg * 3]].publish(coxa);
+    publisher_joints_to_controller[joints_names[move_feet.number_leg * 3 + 2]].publish(tibia);
+
+    femur.data = femur.data -  (0.2 * sing);
+    publisher_joints_to_controller[joints_names[move_feet.number_leg * 3 + 1]].publish(femur);
 
 }
 
