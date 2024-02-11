@@ -65,6 +65,8 @@ Gait::Gait( void )
 
 void Gait::cyclePeriod( const geometry_msgs::Pose2D &base, hexapod_msgs::FeetPositions *feet, geometry_msgs::Twist *gait_vel )
 {
+
+    std::cout << "cycle_period_ = " << cycle_period_<< std::endl;
     period_height = sin( cycle_period_ * PI / CYCLE_LENGTH );
 
     // Calculate current velocities for this period of the gait
@@ -122,8 +124,8 @@ void Gait::gaitCycle( const geometry_msgs::Twist &cmd_vel, hexapod_msgs::FeetPos
     // Convert velocities into actual distance for gait/foot positions
     geometry_msgs::Pose2D base;
     base.x = cmd_vel.linear.x / PI * CYCLE_LENGTH;
-    base.y = cmd_vel.linear.y / PI * CYCLE_LENGTH;
-    base.theta = cmd_vel.angular.z / PI * CYCLE_LENGTH;
+    base.y = cmd_vel.linear.y / PI* CYCLE_LENGTH;
+    base.theta = cmd_vel.angular.z / PI* CYCLE_LENGTH;
 
     // Low pass filter on the values to avoid jerky movements due to rapid value changes
     smooth_base_.x = base.x * 0.05 + ( smooth_base_.x * ( 1.0 - 0.05 ) );
@@ -180,9 +182,11 @@ void Gait::gaitCycle( const geometry_msgs::Twist &cmd_vel, hexapod_msgs::FeetPos
     }
 
     // Loop cycle and switch the leg groupings for cycle
-    if( cycle_period_ == CYCLE_LENGTH )
+    if( cycle_period_ == CYCLE_LENGTH )   
     {
         cycle_period_ = 0;
+        std::cout << "end cycle_period_" << std::endl;
+        //ros::Duration( 3 ).sleep();
         sequence_change( cycle_leg_number_ ); //sequence change
     }
 }

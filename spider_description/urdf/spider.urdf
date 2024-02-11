@@ -1345,4 +1345,57 @@
       effort="6.0"
       velocity="0.524" />
   </joint>
+
+
+
+<gazebo>
+    <plugin name="gazebo_ros_control" filename="libgazebo_ros_imu.so">
+      <!-- <robotNamespace></robotNamespace> -->
+      <topicName>/spider/gyroscope_data</topicName>
+      <serviceName>imu/service</serviceName>
+      <bodyName>base_link</bodyName>
+      <gaussianNoise>0</gaussianNoise>
+      <rpyOffsets>0 0 0</rpyOffsets>
+      <updateRate>30.0</updateRate>
+      <alwaysOn>true</alwaysOn>
+      <gaussianNoise>0</gaussianNoise>
+    </plugin>
+  </gazebo>
+
+
+    <gazebo reference="link_tibia_rr">
+      <mu1>10.0</mu1>
+      <mu2>10.0</mu2>
+
+    </gazebo>
+
+    <gazebo reference="link_tibia_rm">
+      <mu1>10.0</mu1>
+      <mu2>10.0</mu2>
+
+    </gazebo>
+
+
+    <gazebo reference="link_tibia_rf">
+      <mu1>100.0</mu1>
+      <mu2>100.0</mu2>
+ </gazebo>
+
+    <gazebo reference="link_tibia_lr">
+      <mu1>100.0</mu1>
+      <mu2>100.0</mu2>
+
+    </gazebo>
+    <gazebo reference="link_tibia_lm">
+      <mu1>100.0</mu1>
+      <mu2>100.0</mu2>
+
+    </gazebo>
+
+
+    <gazebo reference="link_tibia_lf">
+      <mu1>100.0</mu1>
+      <mu2>100.0</mu2>
+
+    </gazebo>
 </robot>

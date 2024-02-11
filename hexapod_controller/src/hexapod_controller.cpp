@@ -93,6 +93,7 @@ int main( int argc, char **argv )
         if( control.getHexActiveState() == true && control.getPrevHexActiveState() == true && control.getMoveFeetMode() == false)
         {
             // Gait Sequencer
+            std::cout << "AAAA" << std::endl;
             gait.gaitCycle( control.cmd_vel_, &control.feet_, &control.gait_vel_ );
             control.publishTwist( control.gait_vel_ );
 

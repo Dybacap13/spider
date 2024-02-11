@@ -53,6 +53,7 @@ Ik::Ik( void )
     ros::param::get( "TIBIA_LENGTH", TIBIA_LENGTH );
     ros::param::get( "TARSUS_LENGTH", TARSUS_LENGTH );
     ros::param::get( "NUMBER_OF_LEGS", NUMBER_OF_LEGS );
+    body_pub = nh_.advertise<hexapod_msgs::Pose>( "/body_coordinate", 10 );
 }
 
 //=============================================================================
@@ -163,6 +164,7 @@ void Ik::calculateIK( const hexapod_msgs::FeetPositions &feet, const hexapod_msg
 
 
         legs->leg[leg_index].tarsus = legs->leg[leg_index].femur + legs->leg[leg_index].tibia;
+        body_pub.publish(body);
 
 }
 

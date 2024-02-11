@@ -59,6 +59,8 @@ class Ik
         std::vector<double> INIT_FOOT_POS_X, INIT_FOOT_POS_Y, INIT_FOOT_POS_Z; // Start position Of feet
         double COXA_LENGTH, FEMUR_LENGTH, TIBIA_LENGTH, TARSUS_LENGTH; // Leg segment measurements
         int NUMBER_OF_LEGS; // Number of legs
+        ros::Publisher body_pub;
+        ros::NodeHandle nh_;
 };
 
 #endif // IK_H_
