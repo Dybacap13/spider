@@ -5,6 +5,46 @@
 
 
 
+## Инструкция 
+
+*Запускаем gazebo*
+
+     roslaunch spider_gazebo srider_gazebo.launch 
+     
+*Запускаем ноду, которая будет публиковать в контроллеры*
+
+     rosrun hexapod_control_gazebo hexapod_control_gazebo 
+     
+*Запускаем ноду, которая считает обратную кинематику и генерирует походку* 
+
+     rosrun hexapod_controller hexapod_controller 
+     
+*Публикуем в топики*
+
+     /state(std_msgs/Bool) - true
+     /cmd_vel(geometry_msgs/Twist) - скорость
+    
+
+
+
+##  Расчёт награды
+
+**_reward_learning_**
+
+Пакет, где это будет происходить
+
+*Гироскоп*
+
+    /spider/gyroscope_data(sensor_msgs/Imu) -  читает данные с гироскопа в газебо
+    
+*Одометрия* 
+
+    /odometry/calculated(nav_msgs/Odometry) - читает координаты робота, относительно нулевой точки
+
+*Награда* 
+
+    /reward(std_msgs/Float) - публикуется расчитанная награда
+
 ##  Nodes
 
 **_hexapod_controller_**
@@ -59,11 +99,7 @@
 
      roslaunch spider_gazebo srider_gazebo.launch 
      
-## Инструкция 
 
-     roslaunch spider_gazebo srider_gazebo.launch 
-     rosrun hexapod_control_gazebo hexapod_control_gazebo 
-     rosrun hexapod_controller hexapod_controller 
 
 
 ## Суставы 

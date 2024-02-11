@@ -36,17 +36,16 @@ Reward::Reward(ros::NodeHandle nh_)
 }
 
 void Reward::gyroscopeCallback(sensor_msgs::Imu gyroscope_msg){
+    gyroscope_last = gyroscope;
     gyroscope = gyroscope_msg;
 }
 
 void Reward::odometryCallback(nav_msgs::Odometry odometry_msg){
+    odometry_last = odometry;
     odometry = odometry_msg;
 }
 
 
 void Reward::calculatorReward(){
-    gyroscope_last = gyroscope;
-    odometry_last = odometry;
-
 
 }
