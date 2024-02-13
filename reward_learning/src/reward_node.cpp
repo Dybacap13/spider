@@ -7,7 +7,7 @@ int main( int argc, char **argv )
     Reward reward( nh);
     while (ros::ok()){
         reward.calculatorReward();
-        ros::Duration(2.0).sleep();
+        //ros::Duration(2.0).sleep();
         ros::spinOnce();
 
     }
