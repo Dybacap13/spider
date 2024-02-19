@@ -78,6 +78,7 @@ class Control
         geometry_msgs::Twist cmd_vel_;
 
 
+
         //Modes
         bool getMoveFeetMode( void );
         bool getWalkMode( void );

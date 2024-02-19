@@ -4,6 +4,13 @@
      For more information, please see http://wiki.ros.org/sw_urdf_exporter -->
 <robot
   name="spider_description">
+  <link name="base"/>
+  <joint name="base_joint" type="fixed">
+      <parent link="base"/>
+      <child link="base_link"/>
+      <origin xyz="0.0 0.0 -0.7" rpy="0.0 0.0 0.0"/>
+  </joint>
+
   <link
     name="base_link">
     <inertial>
@@ -48,7 +55,7 @@
     name="link_c1_lf">
     <inertial>
       <origin
-        xyz=".026 -5.4857E-07 -0.023899"
+        xyz="0.026 -5.4857E-07 -0.023899"
         rpy="0 0 0" />
       <mass
         value="0.02" />
@@ -213,8 +220,8 @@
     <axis
       xyz="0 0 -1" />
     <limit
-      lower="-2.2689"
-      upper="2.2689"
+      lower="-3.1416"
+      upper="3.1416"
       effort="6.0"
       velocity="0.524" />
   </joint>

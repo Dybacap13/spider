@@ -46,6 +46,7 @@ class Gait
     public:
         Gait( void );
         void gaitCycle( const geometry_msgs::Twist &cmd_vel, hexapod_msgs::FeetPositions *feet, geometry_msgs::Twist *gait_vel );
+        int k;
     private:
         void cyclePeriod( const geometry_msgs::Pose2D &base, hexapod_msgs::FeetPositions *feet, geometry_msgs::Twist *gait_vel );
         void sequence_change( std::vector<int> &vec );

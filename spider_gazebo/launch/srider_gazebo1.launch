@@ -6,7 +6,7 @@
     <arg name="paused" value="true"/>
   </include>
   
-  <param name="robot_description" textfile="$(find spider_description)/urdf/spider.urdf" />
+  <param name="robot_description" textfile="$(find spider_description)/urdf/spider1.urdf" />
   <node name="spawn_urdf" pkg="gazebo_ros" type="spawn_model" args="-file $(find spider_description)/urdf/spider1.urdf -urdf -model spider1 -z 0.2" />
 
 

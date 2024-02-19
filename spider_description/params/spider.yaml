@@ -27,7 +27,7 @@ NUMBER_OF_LEG_SEGMENTS: 3
 
 
 #________________________________UPDATE_________________________________________________________________
-# Define Initial Coxa Offsets in Radians ['RR', 'RM', 'RF', 'LR', 'LM', 'LF']
+# Define Initial Coxa Offsets in Radians ['rr', 'rm', 'rf', 'lr', 'lm', 'lf']
 # IK is solved in local space currently, hence the reason right and left have same angle offsets.
 INIT_COXA_ANGLE: [!degrees -45, !degrees 0.0, !degrees 45, !degrees -45.0, !degrees 0.0, !degrees 45.0]
 
@@ -36,7 +36,7 @@ INIT_COXA_ANGLE: [!degrees -45, !degrees 0.0, !degrees 45, !degrees -45.0, !degr
 
 
 #________________________________UPDATE_________________________________________________________________
-# Define distance in meters from coxa joint to the center ['RR', 'RM', 'RF', 'LR', 'LM', 'LF']
+# Define distance in meters from coxa joint to the center ['rr', 'rm', 'rf', 'lr', 'lm', 'lf']
 # IK is solved in local space currently, hence the reason right and left have same distance values
 
 COXA_TO_CENTER_X: [-0.170, 0.0, 0.170, -0.170, 0.0, 0.170]
@@ -44,7 +44,7 @@ COXA_TO_CENTER_Y: [0.110, 0.1325, 0.110, 0.110, 0.1325, 0.110]
 #________________________________________________________________________________________________________
 
 
-# Define Start Position Of Feet in meters from the coxa joint ['RR', 'RM', 'RF', 'LR', 'LM', 'LF']
+# Define Start Position Of Feet in meters from the coxa joint ['rr', 'rm', 'rf', 'lr', 'lm', 'lf']
 # Middle Legs is coxa axis to foot in meters
 # math to find positions of front and back legs POS_Y = Middle leg start position * cos(45 degrees) (0.707)
 # math to find positions of front and back legs POS_X = Middle leg start position * sin(45 degrees) (0.707)
@@ -81,7 +81,7 @@ COMPENSATE_TO_WITHIN: !degrees 1
 
 # Gait Settings
 CYCLE_LENGTH: 50
-LEG_LIFT_HEIGHT: 0.015
+LEG_LIFT_HEIGHT: 0.025
 MAX_LIFT_HEIGHT: 0.050
 
 GAIT_STYLE: "TRIPOD"
@@ -90,24 +90,24 @@ INTERPOLATION_LOOP_RATE: 550
 
 # Servo descriptions
 SERVOS: {
-'01': {name: coxa_joint_RR, type: AX, id: 8, ticks: 1024, center: 512, max_radians: !degrees 300, sign: -1, offset: !degrees 0},
-'02': {name: femur_joint_RR, type: AX, id: 10, ticks: 1024, center: 512, max_radians: !degrees 300, sign: -1, offset: !degrees 14},
-'03': {name: tibia_joint_RR, type: AX, id: 12, ticks: 1024, center: 512, max_radians: !degrees 300, sign: -1, offset: !degrees -48},
-'04': {name: coxa_joint_RM, type: AX, id: 14, ticks: 1024, center: 512, max_radians: !degrees 300, sign: -1, offset: !degrees 0},
-'05': {name: femur_joint_RM, type: AX, id: 16, ticks: 1024, center: 512, max_radians: !degrees 300, sign: -1, offset: !degrees 14},
-'06': {name: tibia_joint_RM, type: AX, id: 18, ticks: 1024, center: 512, max_radians: !degrees 300, sign: -1, offset: !degrees -48},
-'07': {name: coxa_joint_RF, type: AX, id: 2, ticks: 1024, center: 512, max_radians: !degrees 300, sign: -1, offset: !degrees 0},
-'08': {name: femur_joint_RF, type: AX, id: 4, ticks: 1024, center: 512, max_radians: !degrees 300, sign: -1, offset: !degrees 14},
-'09': {name: tibia_joint_RF, type: AX, id: 6, ticks: 1024, center: 512, max_radians: !degrees 300, sign: -1, offset: !degrees -48},
-'10': {name: coxa_joint_LR, type: AX, id: 7, ticks: 1024, center: 512, max_radians: !degrees 300, sign: 1, offset: !degrees 0},
-'11': {name: femur_joint_LR, type: AX, id: 9, ticks: 1024, center: 512, max_radians: !degrees 300, sign: 1, offset: !degrees 14},
-'12': {name: tibia_joint_LR, type: AX, id: 11, ticks: 1024, center: 512, max_radians: !degrees 300, sign: 1, offset: !degrees -48},
-'13': {name: coxa_joint_LM, type: AX, id: 13, ticks: 1024, center: 512, max_radians: !degrees 300, sign: 1, offset: !degrees 0},
-'14': {name: femur_joint_LM, type: AX, id: 15, ticks: 1024, center: 512, max_radians: !degrees 300, sign: 1, offset: !degrees 14},
-'15': {name: tibia_joint_LM, type: AX, id: 17, ticks: 1024, center: 512, max_radians: !degrees 300, sign: 1, offset: !degrees -48},
-'16': {name: coxa_joint_LF, type: AX, id: 19, ticks: 1024, center: 512, max_radians: !degrees 300, sign: 1, offset: !degrees 0},
-'17': {name: femur_joint_LF, type: AX, id: 3, ticks: 1024, center: 512, max_radians: !degrees 300, sign: 1, offset: !degrees 14},
-'18': {name: tibia_joint_LF, type: AX, id: 5, ticks: 1024, center: 512, max_radians: !degrees 300, sign: 1, offset: !degrees -48},
+'01': {name: j_c1_rr, type: AX, id: 8, ticks: 1024, center: 512, max_radians: !degrees 300, sign: -1, offset: !degrees 0},
+'02': {name: j_thigh_rr, type: AX, id: 10, ticks: 1024, center: 512, max_radians: !degrees 300, sign: -1, offset: !degrees 14},
+'03': {name: j_tibia_rr, type: AX, id: 12, ticks: 1024, center: 512, max_radians: !degrees 300, sign: -1, offset: !degrees -48},
+'04': {name: j_c1_rm, type: AX, id: 14, ticks: 1024, center: 512, max_radians: !degrees 300, sign: -1, offset: !degrees 0},
+'05': {name: j_thigh_rm, type: AX, id: 16, ticks: 1024, center: 512, max_radians: !degrees 300, sign: -1, offset: !degrees 14},
+'06': {name: j_tibia_rm, type: AX, id: 18, ticks: 1024, center: 512, max_radians: !degrees 300, sign: -1, offset: !degrees -48},
+'07': {name: j_c1_rf, type: AX, id: 2, ticks: 1024, center: 512, max_radians: !degrees 300, sign: -1, offset: !degrees 0},
+'08': {name: j_thigh_rf, type: AX, id: 4, ticks: 1024, center: 512, max_radians: !degrees 300, sign: -1, offset: !degrees 14},
+'09': {name: j_tibia_rf, type: AX, id: 6, ticks: 1024, center: 512, max_radians: !degrees 300, sign: -1, offset: !degrees -48},
+'10': {name: j_c1_lr, type: AX, id: 7, ticks: 1024, center: 512, max_radians: !degrees 300, sign: 1, offset: !degrees 0},
+'11': {name: j_thigh_lr, type: AX, id: 9, ticks: 1024, center: 512, max_radians: !degrees 300, sign: 1, offset: !degrees 14},
+'12': {name: j_tibia_lr, type: AX, id: 11, ticks: 1024, center: 512, max_radians: !degrees 300, sign: 1, offset: !degrees -48},
+'13': {name: j_c1_lm, type: AX, id: 13, ticks: 1024, center: 512, max_radians: !degrees 300, sign: 1, offset: !degrees 0},
+'14': {name: j_thigh_lm, type: AX, id: 15, ticks: 1024, center: 512, max_radians: !degrees 300, sign: 1, offset: !degrees 14},
+'15': {name: j_tibia_lm, type: AX, id: 17, ticks: 1024, center: 512, max_radians: !degrees 300, sign: 1, offset: !degrees -48},
+'16': {name: j_c1_lf, type: AX, id: 19, ticks: 1024, center: 512, max_radians: !degrees 300, sign: 1, offset: !degrees 0},
+'17': {name: j_thigh_lf, type: AX, id: 3, ticks: 1024, center: 512, max_radians: !degrees 300, sign: 1, offset: !degrees 14},
+'18': {name: j_tibia_lf, type: AX, id: 5, ticks: 1024, center: 512, max_radians: !degrees 300, sign: 1, offset: !degrees -48},
 '19': {name: pan_joint, type: AX, id: 20, ticks: 1024, center: 512, max_radians: !degrees 300, sign: 1, offset: !degrees 0},
 '20': {name: tilt_joint, type: AX, id: 21, ticks: 1024, center: 512, max_radians: !degrees 300, sign: 1, offset: !degrees 0}
 }

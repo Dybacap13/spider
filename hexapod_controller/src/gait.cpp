@@ -57,6 +57,7 @@ Gait::Gait( void )
     }
     period_distance = 0;
     period_height = 0;
+    k = 0;
 }
 
 //=============================================================================
@@ -66,7 +67,7 @@ Gait::Gait( void )
 void Gait::cyclePeriod( const geometry_msgs::Pose2D &base, hexapod_msgs::FeetPositions *feet, geometry_msgs::Twist *gait_vel )
 {
 
-    std::cout << "cycle_period_ = " << cycle_period_<< std::endl;
+    //std::cout << "cycle_period_ = " << cycle_period_<< std::endl;
     period_height = sin( cycle_period_ * PI / CYCLE_LENGTH );
 
     // Calculate current velocities for this period of the gait
@@ -78,9 +79,84 @@ void Gait::cyclePeriod( const geometry_msgs::Pose2D &base, hexapod_msgs::FeetPos
     gait_vel->angular.z = ( ( PI*base.theta ) /  CYCLE_LENGTH ) * period_height * ( 1.0 / dt );
     last_time_ = current_time_;
 
+
+    // double middle = 0.086;
+    // double krau = 0.0;
+    // double krauNO0 = 0.086;
+    // double nnn = 0.001;
+
+    // if ( k == 0){
+
+    //     //RR
+    //     //хуй
+
+    //     //RM
+    //     feet->foot[1].position.x = middle;
+    //     feet->foot[1].position.z = LEG_LIFT_HEIGHT * period_height;
+
+    //     //RF
+    //     //feet->foot[2].position.x = krau;
+    //     feet->foot[2].position.x = -nnn;
+
+    //     //LR
+    //     //feet->foot[3].position.x = krau;
+    //     feet->foot[3].position.x = nnn;
+    //     feet->foot[3].position.z = LEG_LIFT_HEIGHT * period_height;
+
+    //     //LM
+    //     feet->foot[4].position.x = -middle;
+
+    //     //LF
+    //     feet->foot[5].position.z = LEG_LIFT_HEIGHT * period_height;
+    //      k = 675;
+
+    // }
+
+    // for( int leg_index = 0; leg_index < NUMBER_OF_LEGS; leg_index++ )
+    // {
+
+
+    //     if( cycle_leg_number_[leg_index] == 0 && is_travelling_ == true )
+    //     {
+    //         feet->foot[leg_index].position.z = 0;
+
+    //         // RR LR
+    //         if (leg_index == 0 || leg_index == 3 )
+    //         feet->foot[leg_index].position.x = -krauNO0 ;
+
+    //         // RM LM
+    //         if ( leg_index == 1 || leg_index == 4)
+    //         feet->foot[leg_index].position.x = -middle ;
+
+    //         // RF LF
+    //         if ( leg_index == 2 || leg_index == 5)
+    //         //feet->foot[leg_index].position.x = krau;
+    //         feet->foot[leg_index].position.x = -nnn;
+
+    //     }
+
+    //     if( cycle_leg_number_[leg_index] == 1 )
+    //     {
+
+    //         feet->foot[leg_index].position.z = LEG_LIFT_HEIGHT * period_height;
+
+    //         // RR LR
+    //         if (leg_index == 0 || leg_index == 3 )
+    //         //feet->foot[leg_index].position.x = krau ;
+    //         feet->foot[leg_index].position.x = nnn;
+
+    //         // RM LM
+    //         if ( leg_index == 1 || leg_index == 4)
+    //         feet->foot[leg_index].position.x = middle ;
+
+    //         // RF LF
+    //         if ( leg_index == 2 || leg_index == 5)
+    //         feet->foot[leg_index].position.x = krauNO0;
+
+    //     }
+
     for( int leg_index = 0; leg_index < NUMBER_OF_LEGS; leg_index++ )
     {
-
         // Lifts the leg and move it forward
         if( cycle_leg_number_[leg_index] == 0 && is_travelling_ == true )
         {
@@ -90,6 +166,12 @@ void Gait::cyclePeriod( const geometry_msgs::Pose2D &base, hexapod_msgs::FeetPos
             feet->foot[leg_index].position.y = base.y * period_distance;
             feet->foot[leg_index].position.z = LEG_LIFT_HEIGHT * period_height;
             feet->foot[leg_index].orientation.yaw = base.theta * period_distance;
+
+            std::cout << "leg_index = " << leg_index << std::endl;
+            std::cout << "X = " << feet->foot[leg_index].position.x << std::endl;
+
+
+
 
 
         }
@@ -102,6 +184,10 @@ void Gait::cyclePeriod( const geometry_msgs::Pose2D &base, hexapod_msgs::FeetPos
             feet->foot[leg_index].position.z = 0;
             feet->foot[leg_index].orientation.yaw = -base.theta * period_distance;
 
+            std::cout << "leg_index = " << leg_index << std::endl;
+            std::cout << "X = " << feet->foot[leg_index].position.x << std::endl;
+
+
 
         }
         if( cycle_leg_number_[leg_index] == 2 )
@@ -113,6 +199,7 @@ void Gait::cyclePeriod( const geometry_msgs::Pose2D &base, hexapod_msgs::FeetPos
             feet->foot[leg_index].orientation.yaw = -base.theta * period_distance;
         }
     }
+
 }
 
 //=============================================================================
@@ -126,11 +213,13 @@ void Gait::gaitCycle( const geometry_msgs::Twist &cmd_vel, hexapod_msgs::FeetPos
     base.x = cmd_vel.linear.x / PI * CYCLE_LENGTH;
     base.y = cmd_vel.linear.y / PI* CYCLE_LENGTH;
     base.theta = cmd_vel.angular.z / PI* CYCLE_LENGTH;
+    std::cout << "base.x = " << base.x << std::endl;
 
     // Low pass filter on the values to avoid jerky movements due to rapid value changes
     smooth_base_.x = base.x * 0.05 + ( smooth_base_.x * ( 1.0 - 0.05 ) );
     smooth_base_.y = base.y * 0.05 + ( smooth_base_.y * ( 1.0 - 0.05 ) );
     smooth_base_.theta = base.theta * 0.05 + ( smooth_base_.theta * ( 1.0 - 0.05 ) );
+    std::cout << "smooth_base_.x = " << smooth_base_.x << std::endl;
 
     // Check to see if we are actually travelling
     if( ( std::abs( smooth_base_.y ) > 0.001 ) || // 1 mm
@@ -185,7 +274,7 @@ void Gait::gaitCycle( const geometry_msgs::Twist &cmd_vel, hexapod_msgs::FeetPos
     if( cycle_period_ == CYCLE_LENGTH )   
     {
         cycle_period_ = 0;
-        std::cout << "end cycle_period_" << std::endl;
+        //std::cout << "end cycle_period_" << std::endl;
         //ros::Duration( 3 ).sleep();
         sequence_change( cycle_leg_number_ ); //sequence change
     }
