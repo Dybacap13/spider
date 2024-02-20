@@ -83,7 +83,7 @@ void Gait::cyclePeriod( const geometry_msgs::Pose2D &base, hexapod_msgs::FeetPos
     // double middle = 0.086;
     // double krau = 0.0;
     // double krauNO0 = 0.086;
-    // double nnn = 0.001;
+    // double nnn = 0.00;
 
     // if ( k == 0){
 
@@ -91,7 +91,7 @@ void Gait::cyclePeriod( const geometry_msgs::Pose2D &base, hexapod_msgs::FeetPos
     //     //хуй
 
     //     //RM
-    //     feet->foot[1].position.x = middle;
+    //     feet->foot[1].position.x = -middle;
     //     feet->foot[1].position.z = LEG_LIFT_HEIGHT * period_height;
 
     //     //RF
@@ -104,7 +104,7 @@ void Gait::cyclePeriod( const geometry_msgs::Pose2D &base, hexapod_msgs::FeetPos
     //     feet->foot[3].position.z = LEG_LIFT_HEIGHT * period_height;
 
     //     //LM
-    //     feet->foot[4].position.x = -middle;
+    //     feet->foot[4].position.x = middle;
 
     //     //LF
     //     feet->foot[5].position.z = LEG_LIFT_HEIGHT * period_height;
@@ -122,11 +122,11 @@ void Gait::cyclePeriod( const geometry_msgs::Pose2D &base, hexapod_msgs::FeetPos
 
     //         // RR LR
     //         if (leg_index == 0 || leg_index == 3 )
-    //         feet->foot[leg_index].position.x = -krauNO0 ;
+    //         feet->foot[leg_index].position.x = krauNO0 ;
 
     //         // RM LM
     //         if ( leg_index == 1 || leg_index == 4)
-    //         feet->foot[leg_index].position.x = -middle ;
+    //         feet->foot[leg_index].position.x = middle ;
 
     //         // RF LF
     //         if ( leg_index == 2 || leg_index == 5)
@@ -147,13 +147,14 @@ void Gait::cyclePeriod( const geometry_msgs::Pose2D &base, hexapod_msgs::FeetPos
 
     //         // RM LM
     //         if ( leg_index == 1 || leg_index == 4)
-    //         feet->foot[leg_index].position.x = middle ;
+    //         feet->foot[leg_index].position.x = -middle ;
 
     //         // RF LF
     //         if ( leg_index == 2 || leg_index == 5)
-    //         feet->foot[leg_index].position.x = krauNO0;
+    //         feet->foot[leg_index].position.x = -krauNO0;
 
     //     }
+    // }
 
     for( int leg_index = 0; leg_index < NUMBER_OF_LEGS; leg_index++ )
     {

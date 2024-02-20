@@ -269,7 +269,25 @@
             </inertial>
         </link>
 
+    <gazebo reference="foot_${side}${position}">
+      <mu1>100.0</mu1>
+      <mu2>100.0</mu2>
+    </gazebo>
     </xacro:macro>
+
+    <gazebo>
+        <plugin name="gazebo_ros_control" filename="libgazebo_ros_imu.so">
+          <!-- <robotNamespace></robotNamespace> -->
+          <topicName>/spider/gyroscope_data</topicName>
+          <serviceName>imu/service</serviceName>
+          <bodyName>body_link</bodyName>
+          <gaussianNoise>0</gaussianNoise>
+          <rpyOffsets>0 0 0</rpyOffsets>
+          <updateRate>30.0</updateRate>
+          <alwaysOn>true</alwaysOn>
+          <gaussianNoise>0</gaussianNoise>
+        </plugin>
+      </gazebo>
 
 <!-- Build robot model -->
 <xacro:leg side="r" position="r" x="-0.170" y="-0.110" angle="-${pi*3/4}" axis_femur="1" axis_tibia="-1"/>
