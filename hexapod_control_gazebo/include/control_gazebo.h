@@ -97,21 +97,21 @@ ControlGazebo::ControlGazebo(void)  {
 
 void ControlGazebo::jointsToGazeboCallback(sensor_msgs::JointState msg_joint_state){
     std_msgs::Float64 msg;
-   // ros::Rate loop_rate( 0.1 );
+
     for (auto i:femur){
-        msg.data = msg_joint_state.position[i] * (-1) ;
+        msg.data = msg_joint_state.position[i]  ;
         std::cout <<  msg_joint_state.name[i] <<" = "<< msg_joint_state.position[i] << std::endl;
         publisher_joints_to_controller[joints_names[i]].publish(msg);
     }
 
     for (auto i:tibia){
-        msg.data = msg_joint_state.position[i] * (-1) ;
+        msg.data = msg_joint_state.position[i]  ;
         std::cout <<  msg_joint_state.name[i] <<" = "<< msg_joint_state.position[i] << std::endl;
         publisher_joints_to_controller[joints_names[i]].publish(msg);
     }
 
     for (auto i:coxa){
-        msg.data = msg_joint_state.position[i] * (-1) ;
+        msg.data = msg_joint_state.position[i]  ;
         std::cout <<  msg_joint_state.name[i] <<" = "<< msg_joint_state.position[i] << std::endl;
         publisher_joints_to_controller[joints_names[i]].publish(msg);
     }
@@ -122,7 +122,7 @@ void ControlGazebo::jointsToGazeboCallback(sensor_msgs::JointState msg_joint_sta
     // publisher_joints_to_controller[joints_names[i]].publish(msg);
 
     //}
-ros::Duration( 0.000005 ).sleep();
+
     std::cout <<  "__________________________" << std::endl;
     current_state =  msg_joint_state;
 

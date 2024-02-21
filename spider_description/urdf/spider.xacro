@@ -67,14 +67,14 @@
 
 
     <!-- Joint properties -->
-   <xacro:property name="joint_lower_limit" value="-${3.14}"/>
-   <xacro:property name="joint_upper_limit" value="${3.14}"/>
+   <xacro:property name="joint_lower_limit" value="-2.00"/>
+   <xacro:property name="joint_upper_limit" value="2.00"/>
    <xacro:property name="joint_effort" value="6.0"/>
    <xacro:property name="joint_velocity" value="0.524"/>
 
 
     <!-- Leg macro -->
-    <xacro:macro name="leg" params="side position x y angle axis_femur axis_tibia">
+    <xacro:macro name="leg" params="side position x y angle axis_coxa axis_femur axis_tibia">
 
         <!-- leg position -->
         <joint name="leg_center_joint_${side}${position}" type="fixed">
@@ -98,7 +98,7 @@
            <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 ${angle}"/>
            <parent link="leg_center_${side}${position}"/>
            <child link="link_c1_${side}${position}"/>
-           <axis xyz="0.0 0.0 1.0"/>
+           <axis xyz="0.0 0.0 ${axis_coxa}"/>
            <limit lower="${joint_lower_limit}" upper="${joint_upper_limit}" effort="${joint_effort}" velocity="${joint_velocity}"/>
        </joint>
        <transmission name="coxa_transmission_${side}${position}">
@@ -252,6 +252,7 @@
           </inertial>
       </link>
 
+
 <!-- foot -->
         <joint name="foot_joint_${side}${position}" type="fixed">
             <origin xyz="${tibia_length} 0.0 0.0" rpy="0.0 0.0 0.0" />
@@ -273,6 +274,7 @@
       <mu1>100.0</mu1>
       <mu2>100.0</mu2>
     </gazebo>
+
     </xacro:macro>
 
     <gazebo>
@@ -290,11 +292,11 @@
       </gazebo>
 
 <!-- Build robot model -->
-<xacro:leg side="r" position="r" x="-0.170" y="-0.110" angle="-${pi*3/4}" axis_femur="1" axis_tibia="-1"/>
-<xacro:leg side="r" position="m" x="0.0" y="-0.1325" angle="-${pi/2}" axis_femur="1" axis_tibia="-1"/>
-<xacro:leg side="r" position="f" x="0.1778" y="-0.110" angle="-${pi/4}" axis_femur="1" axis_tibia="-1"/>
+<xacro:leg side="r" position="r" x="-0.170" y="-0.110" angle="-${pi*3/4}" axis_femur="-1" axis_tibia="1" axis_coxa="1"/>
+<xacro:leg side="r" position="m" x="0.0" y="-0.1325" angle="-${pi/2}" axis_femur="-1" axis_tibia="1" axis_coxa="1"/>
+<xacro:leg side="r" position="f" x="0.1778" y="-0.110" angle="-${pi/4}" axis_femur="-1" axis_tibia="1" axis_coxa="1"/>
 
-<xacro:leg side="l" position="r" x="-0.170" y="0.110" angle="${pi*3/4}" axis_femur="-1" axis_tibia="1"/>
-<xacro:leg side="l" position="m" x="0.0" y="0.1325" angle="${pi/2}" axis_femur="-1" axis_tibia="1"/>
-<xacro:leg side="l" position="f" x="0.170" y="0.110" angle="${pi/4}" axis_femur="-1" axis_tibia="1"/>
+<xacro:leg side="l" position="r" x="-0.170" y="0.110" angle="${pi*3/4}" axis_femur="1" axis_tibia="-1" axis_coxa="1"/>
+<xacro:leg side="l" position="m" x="0.0" y="0.1325" angle="${pi/2}" axis_femur="1" axis_tibia="-1" axis_coxa="1"/>
+<xacro:leg side="l" position="f" x="0.170" y="0.110" angle="${pi/4}" axis_femur="1" axis_tibia="-1" axis_coxa="1"/>
 </robot>

@@ -247,7 +247,7 @@ void Control::publishJointStates( const hexapod_msgs::LegsJoints &legs, const he
     {
         joint_state->name[i] = servo_names_[i];
         joint_state->position[i] =  servo_orientation_[i] *legs.leg[leg_index].coxa;
-        //std::cout << joint_state->name[i] << " = "<< servo_orientation_[i] << std::endl;
+       // std::cout << joint_state->name[i] << " = "<< servo_orientation_[i] << std::endl;
 
         i++;
         joint_state->name[i] = servo_names_[i];
@@ -287,6 +287,7 @@ void Control::publishJointStates( const hexapod_msgs::LegsJoints &legs, const he
 
     joint_state_pub_.publish( *joint_state );
     ros::Rate loop_rate( MASTER_LOOP_RATE );
+    //std::cout << "______" << std::endl;
     loop_rate.sleep();
 }
 

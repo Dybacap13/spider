@@ -123,8 +123,11 @@ void Ik::calculateIK( const hexapod_msgs::FeetPositions &feet, const hexapod_msg
         double feet_pos_x = -INIT_FOOT_POS_X[leg_index] + body.position.x - body_pos_x + feet.foot[leg_index].position.x;
         double feet_pos_y =  INIT_FOOT_POS_Y[leg_index] + sign*( body.position.y - body_pos_y + feet.foot[leg_index].position.y );
         double feet_pos_z =  INIT_FOOT_POS_Z[leg_index] - TARSUS_LENGTH + body.position.z - body_pos_z - feet.foot[leg_index].position.z;
+        if (leg_index == 0) {
+        std::cout <<"END X = "<< feet_pos_x<< std::endl;
+        std::cout <<"END Y = "<< feet_pos_y<< std::endl;
 
-
+}
 
 
         // Length between the Root and Foot Position ...Pythagorean theorem
@@ -159,7 +162,7 @@ void Ik::calculateIK( const hexapod_msgs::FeetPositions &feet, const hexapod_msg
         legs->leg[leg_index].coxa = atan2( feet_pos_x, feet_pos_y ) + INIT_COXA_ANGLE[leg_index];
         legs->leg[leg_index].femur = ( PI/2 ) - ( theta + angle_b );
 
-        legs->leg[leg_index].tibia = ( PI/3) + angle_c;
+        legs->leg[leg_index].tibia = ( PI) - angle_c;
 
 
 
