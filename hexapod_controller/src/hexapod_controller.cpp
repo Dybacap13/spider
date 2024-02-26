@@ -110,9 +110,9 @@ int main( int argc, char **argv )
             control.setPrevHexActiveState( true );
         }
 
-         if( control.getHexActiveState() == true && control.getPrevHexActiveState() == true  && control.getMoveFeetMode() == true){
+         if( control.getHexActiveState() == true && control.getPrevHexActiveState() == true  && control.getMoveFeetMode() == true  ){
             ROS_INFO("Mode MoveFeet is ON.");
-            while (control.getMoveFeetMode() == true) {
+            while (control.getMoveFeetMode() == true && ros::ok()) {
             }
             ROS_INFO("Mode MoveFeet is OFF.");
          }

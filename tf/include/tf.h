@@ -48,8 +48,10 @@ void TFStaff::tf_calculated(){
     int attempts = 10;
     for (int i = 0; i < attempts; i++) {
       try {
+              //tfListener.waitForTransform("base_link", "body_link", ros::Time(0), ros::Duration(3.0));
         geometry_msgs::TransformStamped transform_base_from_world =
             tfBuffer.lookupTransform("world", "body_link", ros::Time(0));
+
         tf_pub.publish(transform_base_from_world);
 
         is_ee_found = true;

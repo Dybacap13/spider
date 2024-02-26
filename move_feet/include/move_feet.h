@@ -1,40 +1,55 @@
 #include <ros/ros.h>
-
-#include <hexapod_msgs/Pose.h>
-#include <hexapod_msgs/LegsJoints.h>
-#include <hexapod_msgs/FeetPositions.h>
 #include <hexapod_msgs/MoveFeet.h>
+#include <std_msgs/Bool.h>
+#include <sensor_msgs/JointState.h>
+
+
 
 
 class MoveFeet {
 public:
     MoveFeet(ros::NodeHandle nh_);
 
-    bool body_yes;
-    bool feet_yes;
-    bool legs_yes;
 
-
+private:
     ros::NodeHandle nh;
-    hexapod_msgs::Pose body_;
-    hexapod_msgs::FeetPositions feet_;
-    hexapod_msgs::LegsJoints legs_;
-    hexapod_msgs::MoveFeet move_feet_;
 
-
-
-
-    ros::Subscriber body_sub;
-    ros::Subscriber feet_position_sub;
     ros::Subscriber legs_sub;
-    ros::Subscriber move_feet_sub;
+    ros::Subscriber joint_states_sub;
+    ros::Subscriber move_feet_mode_sub;
+    ros::Subscriber reverse_position_sub;
 
-    ros::Publisher move_feet_pub;
+    ros::Publisher joint_states_pub;
 
-    void bodyCallback (hexapod_msgs::Pose body);
-    void feetPositionCallback (hexapod_msgs::FeetPositions feet);
-    void legsCallback(hexapod_msgs::LegsJoints legs);
-    void moveFeetCallback(hexapod_msgs::MoveFeet move_feet);
+
+    sensor_msgs::JointState current_state;
+    sensor_msgs::JointState target_state;
+    sensor_msgs::JointState last_state;
+
+    bool move_feet_mode;
+    bool current_state_bool;
+
+    double FEMUR_ANGLE;
+    std::vector<int> FEMUR_AXIS;
+    std::vector<int> COXA_AXIS;
+    double INTERPOLATION_COEFFICIENT;
+    double DELTA;
+
+
+
+    void jointStatesCallback(sensor_msgs::JointState);
+    void legsCallback(hexapod_msgs::MoveFeet);
+    void moveFeetModeCallback(std_msgs::Bool);
+    void reversePositionCallback(std_msgs::Bool msg);
+
+
+    bool comparisonJointStates(sensor_msgs::JointState first, sensor_msgs::JointState second);
+    void interpolationOfAngles(sensor_msgs::JointState , sensor_msgs::JointState );
+    void jointStatesPublisher(sensor_msgs::JointState);
+    void reversePosition();
+
+
+
 
 
 

@@ -20,12 +20,15 @@
 
 
 
+
+
+
     <link name="base_link"/>
 
     <joint name="base_joint" type="fixed">
         <parent link="base_link"/>
         <child link="body_link"/>
-        <origin xyz="0.0 0.0 0.064" rpy="0.0 0.0 0.0"/>
+        <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
     </joint>
 
 
@@ -290,6 +293,26 @@
           <gaussianNoise>0</gaussianNoise>
         </plugin>
       </gazebo>
+
+    <plugin name="p3d_base_controller" filename="libgazebo_ros_p3d.so">
+        <topicName>/aaaaaaaa</topicName>
+         <alwaysOn>true</alwaysOn>
+         <updateRate>50.0</updateRate>
+         <bodyName>body_link</bodyName>
+         <topicName>/ground_truth/state</topicName>
+         <gaussianNoise>0.01</gaussianNoise>
+         <frameName>world</frameName>
+         <xyzOffsets>0 0 0</xyzOffsets>
+         <rpyOffsets>0 0 0</rpyOffsets>
+       </plugin>
+
+<gazebo>
+    <plugin name="gazebo_ros_control" filename=" libgazebo_ros_p3d">
+      <!-- <robotNamespace></robotNamespace> -->
+      <topicName>/spider/odom_gazebo</topicName>
+
+    </plugin>
+  </gazebo>
 
 <!-- Build robot model -->
 <xacro:leg side="r" position="r" x="-0.170" y="-0.110" angle="-${pi*3/4}" axis_femur="-1" axis_tibia="1" axis_coxa="1"/>

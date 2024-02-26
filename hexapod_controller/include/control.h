@@ -117,6 +117,8 @@ class Control
         tf::TransformBroadcaster odom_broadcaster;
         geometry_msgs::Twist cmd_vel_incoming_;
 
+        std::string SIMULATION;
+
         // Topics we are subscribing
         ros::Subscriber cmd_vel_sub_;
         void cmd_velCallback( const geometry_msgs::TwistConstPtr &cmd_vel_msg );

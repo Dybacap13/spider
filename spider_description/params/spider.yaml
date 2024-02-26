@@ -1,5 +1,7 @@
 # Configuration Settings
 
+SIMULATION: "/joints_to_gazebo"
+
 # Non teleop mode for naviagtion stack, Gazebo, etc type modes.
 # Controller will still have standup and sitdown functions for safty reasons 
 NON_TELEOP: false

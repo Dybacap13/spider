@@ -46,6 +46,8 @@ std::vector<int> coxa = {0, 3, 6, 9, 12, 15};
 std::vector<int> femur = {1, 4, 7, 10, 13, 16};
 std::vector<int> tibia = {2, 5, 8, 11, 14, 17};
 
+
+
 struct JointState {
   std::vector<std::string> joints;
   std::vector<double> angles;
@@ -64,7 +66,7 @@ private:
   ros::Subscriber sub_joints_state;
   ros::Publisher pub_in_controller;
   ros::NodeHandle nh_;
-  ros::Subscriber leg_gazebo_sub;
+
   sensor_msgs::JointState current_state;
 
 
@@ -77,14 +79,14 @@ private:
 
 
   void jointsToGazeboCallback(sensor_msgs::JointState); // считывает состояние суставов
-  void legToGazeboCallback(hexapod_msgs::MoveFeet move_feet);
+
 
 };
 
 
 ControlGazebo::ControlGazebo(void)  {
   sub_joints_state = nh_.subscribe("/joints_to_gazebo", 10, &ControlGazebo::jointsToGazeboCallback, this);
-  leg_gazebo_sub = nh_.subscribe("/control_gazebo_legs", 10, &ControlGazebo::legToGazeboCallback, this);
+
 
    for (int i = 0; i < 18; i++) {
      pub_in_controller = nh_.advertise<std_msgs::Float64>(name__space + joints_names[i] + "_position_controller/command", 1000);
@@ -129,26 +131,5 @@ void ControlGazebo::jointsToGazeboCallback(sensor_msgs::JointState msg_joint_sta
 }
 
 
-void ControlGazebo::legToGazeboCallback(hexapod_msgs::MoveFeet move_feet){
 
-    std_msgs::Float64 coxa;
-    std_msgs::Float64 femur;
-    std_msgs::Float64 tibia;
-    int sing = -1;
-
-    if (current_state.position[move_feet.number_leg * 3 + 1] < 0 ) int sing = 1;
-
-    coxa.data = current_state.position[move_feet.number_leg * 3] * (-1) + move_feet.cmd_vel;
-    femur.data = current_state.position[move_feet.number_leg * 3 + 1] * (-1) +  ( 0.2 * sing);
-    tibia.data = current_state.position[move_feet.number_leg * 3 + 2] * (-1);
-
-
-    publisher_joints_to_controller[joints_names[move_feet.number_leg * 3 + 1]].publish(femur);
-    publisher_joints_to_controller[joints_names[move_feet.number_leg * 3]].publish(coxa);
-    publisher_joints_to_controller[joints_names[move_feet.number_leg * 3 + 2]].publish(tibia);
-
-    femur.data = femur.data -  (0.2 * sing);
-    publisher_joints_to_controller[joints_names[move_feet.number_leg * 3 + 1]].publish(femur);
-
-}
 

@@ -54,6 +54,7 @@ Control::Control( void )
     ros::param::get( "COMPENSATE_TO_WITHIN", COMPENSATE_TO_WITHIN );
     ros::param::get( "MASTER_LOOP_RATE", MASTER_LOOP_RATE );
     ros::param::get( "VELOCITY_DIVISION", VELOCITY_DIVISION );
+    ros::param::get( "SIMULATION", SIMULATION);
     current_time_odometry_ = ros::Time::now();
     last_time_odometry_ = ros::Time::now();
     current_time_cmd_vel_ = ros::Time::now();
@@ -94,7 +95,7 @@ Control::Control( void )
 
     // Topics we are publishing
     //sounds_pub_ = nh_.advertise<hexapod_msgs::Sounds>( "/sounds", 10 );
-    joint_state_pub_ = nh_.advertise<sensor_msgs::JointState>( "/joints_to_gazebo", 10 );
+    joint_state_pub_ = nh_.advertise<sensor_msgs::JointState>( SIMULATION, 10 );
     odom_pub_ = nh_.advertise<nav_msgs::Odometry>( "/odometry/calculated", 50 );
     twist_pub_ = nh_.advertise<geometry_msgs::TwistWithCovarianceStamped>( "/twist", 50 );
 
@@ -107,7 +108,7 @@ Control::Control( void )
     move_feet_mode = false;
     move_walk_mode = false;
 
-    move_feet_mode_sub = nh_.subscribe<std_msgs::Bool>( "/move_feet_mode", 1, &Control::moveFeetModeCallback, this );
+    move_feet_mode_sub = nh_.subscribe<std_msgs::Bool>( "/move_legs/mode", 1, &Control::moveFeetModeCallback, this );
     walk_mode_sub = nh_.subscribe<std_msgs::Bool>( "/walk_mode", 1, &Control::walkModeCallback, this );
 }
 
