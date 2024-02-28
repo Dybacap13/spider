@@ -26,14 +26,16 @@ private:
     sensor_msgs::JointState target_state;
     sensor_msgs::JointState last_state;
 
-    bool move_feet_mode;
-    bool current_state_bool;
+    bool move_feet_mode = false;
+    bool current_state_bool = false;
+    bool last_state_bool = false;
 
     double FEMUR_ANGLE;
     std::vector<int> FEMUR_AXIS;
     std::vector<int> COXA_AXIS;
     double INTERPOLATION_COEFFICIENT;
     double DELTA;
+    std::vector<bool> last_command = {false, false, false,false, false,false};
 
 
 
@@ -47,6 +49,8 @@ private:
     void interpolationOfAngles(sensor_msgs::JointState , sensor_msgs::JointState );
     void jointStatesPublisher(sensor_msgs::JointState);
     void reversePosition();
+    void downLegs();
+
 
 
 
