@@ -35,6 +35,8 @@ private:
     std::vector<int> COXA_AXIS;
     double INTERPOLATION_COEFFICIENT;
     double DELTA;
+    int NUMBER_OF_LEGS;
+    double cmd_vel = 0;
     std::vector<bool> last_command = {false, false, false,false, false,false};
 
 
@@ -49,7 +51,14 @@ private:
     void interpolationOfAngles(sensor_msgs::JointState , sensor_msgs::JointState );
     void jointStatesPublisher(sensor_msgs::JointState);
     void reversePosition();
-    void downLegs();
+    //void downLegs(bool reverse);
+
+
+
+
+    sensor_msgs::JointState upAndMoveLegs(std::vector<bool>);
+    sensor_msgs::JointState downLegs(std::vector<bool>);
+    sensor_msgs::JointState reverseTrueLegsAndUpFalseLegs(std::vector<bool>);
 
 
 

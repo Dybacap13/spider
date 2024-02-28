@@ -16,6 +16,7 @@ MoveFeet::MoveFeet(ros::NodeHandle nh_): nh(nh_) {
     ros::param::get( "COXA_AXIS", COXA_AXIS );
     ros::param::get( "INTERPOLATION_COEFFICIENT", INTERPOLATION_COEFFICIENT );
     ros::param::get( "DELTA", DELTA );
+     ros::param::get( "NUMBER_OF_LEGS", NUMBER_OF_LEGS );
 
     legs_sub = nh_.subscribe("/move_legs/legs", 1,  &MoveFeet::legsCallback, this);
     move_feet_mode_sub = nh_.subscribe("/move_legs/mode",  1, &MoveFeet::moveFeetModeCallback, this);
@@ -49,47 +50,20 @@ void MoveFeet::jointStatesCallback(sensor_msgs::JointState msg){
 
 
 void MoveFeet::legsCallback (hexapod_msgs::MoveFeet move_feet){
-    sensor_msgs::JointState target_state;
-    sensor_msgs::JointState down_legs;
-    target_state = current_state;
-    down_legs =  current_state;
-    last_state = current_state;
-    last_state_bool = true;
+    cmd_vel = move_feet.cmd_vel;
 
-    for (auto number_leg = 0; number_leg < move_feet.legs.size(); number_leg ++) {
-        last_command[number_leg] = false;
-        // если ногу не двигаем, то идет дальше
-        if (!move_feet.legs[number_leg]) {
-           continue;
-        }
-        last_command[number_leg] = true;
+    for (auto number_leg = 0; number_leg < move_feet.legs.size(); number_leg ++){
+        last_command[number_leg] = move_feet.legs[number_leg];
+    }
 
-        //поднимаем только те ноги, которые трогаем
-        target_state.position[number_leg * 3 + 1] = current_state.position[number_leg * 3 + 1]  + (FEMUR_ANGLE * FEMUR_AXIS[number_leg]);
-        std::cout <<target_state.name [number_leg * 3+1] <<" = " << target_state.position [number_leg * 3+1] <<std::endl;
-
-
-
-        // здесь двигаем coxa
-        target_state.position[number_leg * 3] = current_state.position[number_leg * 3]  + (move_feet.cmd_vel * COXA_AXIS[number_leg]);
-        down_legs.position[number_leg * 3] = current_state.position[number_leg * 3]  + (move_feet.cmd_vel * COXA_AXIS[number_leg]);
-
-        std::cout <<target_state.name [number_leg * 3] <<" = " << target_state.position [number_leg * 3] <<std::endl;
-     }
-
-    // в итоге мы собрали все углы для перемены состояния
-    // запускаем функцию плавного перехода в эти углы
-
-    std::cout <<"____________________________" <<std::endl;
-    interpolationOfAngles(current_state, target_state);
-
-    downLegs(); // нужно чтобы опустить ноги
-
-
-
-
-
-
+    std::vector<bool>reverse_command = {!last_command[0], !last_command[1], !last_command[2], !last_command[3], !last_command[4],!last_command[5]};
+    interpolationOfAngles(current_state, upAndMoveLegs(last_command));
+    ros::Duration(1.0).sleep();
+    interpolationOfAngles(current_state, downLegs(last_command));
+    ros::Duration(1.0).sleep();
+    interpolationOfAngles(current_state, reverseTrueLegsAndUpFalseLegs(last_command));
+    ros::Duration(1.0).sleep();
+    interpolationOfAngles(current_state, downLegs(reverse_command));
 
 }
 
@@ -130,7 +104,6 @@ bool MoveFeet::comparisonJointStates(sensor_msgs::JointState first, sensor_msgs:
 
     for (int i = 0; i < first.name.size(); i++ ){
         if (abs(first.position[i] - second.position[i]) > DELTA) {
-            // ros::Duration(1.0).sleep();
             return false;
         }
     }
@@ -147,7 +120,6 @@ void MoveFeet::jointStatesPublisher(sensor_msgs::JointState msg_pub){
 
 
 void MoveFeet::reversePositionCallback(std_msgs::Bool msg){
-    //ROS_INFO ("reversePositionCallback");
     if (!last_state_bool) {
         ROS_ERROR("NO LAST STATE");
         return;
@@ -158,39 +130,88 @@ void MoveFeet::reversePositionCallback(std_msgs::Bool msg){
 
 void MoveFeet::reversePosition(){
     //ros::Duration(1.0).sleep();
-    sensor_msgs::JointState target_state;
-    sensor_msgs::JointState down_leg;
-    target_state = last_state;
-    down_leg = last_state;
+    // sensor_msgs::JointState target_state;
+    // sensor_msgs::JointState down_leg;
+    // target_state = last_state;
+    // down_leg = last_state;
 
-     for (auto number_leg = 0; number_leg < 6; number_leg ++) {
+    //  for (auto number_leg = 0; number_leg < 6; number_leg ++) {
 
-        // поднимаем ножку, ведь ее нужно подвинуть
-        if (last_command[number_leg])
-             target_state.position[number_leg * 3 + 1] = current_state.position[number_leg * 3 + 1]  + (FEMUR_ANGLE * FEMUR_AXIS[number_leg]);
-     }
-     //ros::Duration(1.0).sleep();
 
-     // переходим в обратку - ноги подняты
-    interpolationOfAngles(current_state, target_state);
-    // опускаем ножки
-    downLegs();
+    //     if (last_command[number_leg])
+    //          target_state.position[number_leg * 3 + 1] = current_state.position[number_leg * 3 + 1]  + (FEMUR_ANGLE * FEMUR_AXIS[number_leg]);
+    //  }
+
+    // interpolationOfAngles(current_state, target_state);
+
 }
 
-void MoveFeet::downLegs(){
-    sensor_msgs::JointState down_leg;
-    down_leg = current_state;
-    for (auto number_leg = 0; number_leg < 6; number_leg ++) {
-        if (last_command[number_leg]){
-            //std::cout <<"last_command " << number_leg << " = " <<last_command[number_leg]<< std::endl;
+
+
+sensor_msgs::JointState MoveFeet::upAndMoveLegs(std::vector<bool> command){
+    sensor_msgs::JointState target_state = current_state;
+    std::cout <<"1) upAndMoveLegs" <<std::endl;
+
+    for (auto number_leg = 0; number_leg < NUMBER_OF_LEGS; number_leg ++) {
+
+
+        if (!command[number_leg]) {
+            continue;
+        }
+
+
+        // здесь код для ног true
+
+        // поднимаем
+        target_state.position[number_leg * 3 + 1] = current_state.position[number_leg * 3 + 1]  + (FEMUR_ANGLE * FEMUR_AXIS[number_leg]);
+        std::cout <<target_state.name [number_leg * 3+1] <<" = " << target_state.position [number_leg * 3+1] <<std::endl;
+
+
+        // здесь двигаем coxa
+        target_state.position[number_leg * 3] = current_state.position[number_leg * 3]  + (cmd_vel * COXA_AXIS[number_leg]);
+
+        std::cout <<target_state.name [number_leg * 3] <<" = " << target_state.position [number_leg * 3] <<std::endl;
+     }
+    ros::Duration(2.0).sleep();
+
+    return target_state;
+
+
+}
+
+sensor_msgs::JointState MoveFeet::downLegs(std::vector<bool> command){
+    sensor_msgs::JointState down_leg = current_state;
+    std::cout <<"2) downLegs" <<std::endl;
+    for (auto number_leg = 0; number_leg < NUMBER_OF_LEGS; number_leg ++) {
+        if (command[number_leg]){
             down_leg.position[number_leg * 3 + 1] = current_state.position[number_leg * 3 + 1]  - (FEMUR_ANGLE * FEMUR_AXIS[number_leg]);
         }
-        //std::cout <<down_leg.name [number_leg * 3 + 1] <<" = " << down_leg.position [number_leg * 3 + 1] <<std::endl;
-
+        std::cout <<down_leg.name [number_leg * 3 + 1] <<" = " << down_leg.position [number_leg * 3 + 1] <<std::endl;
 
     }
-    //ros::Duration(1.0).sleep();
-    interpolationOfAngles(current_state, down_leg);
+    ros::Duration(2.0).sleep();
+
+    return down_leg;
+
+}
+
+sensor_msgs::JointState MoveFeet::reverseTrueLegsAndUpFalseLegs(std::vector<bool> command){
+    sensor_msgs::JointState target_state = current_state;
+    std::cout <<"3) reverseTrueLegsAndUpFalseLegs" <<std::endl;
+
+      for (auto number_leg = 0; number_leg < NUMBER_OF_LEGS; number_leg ++) {
+           if (command[number_leg]){
+               target_state.position[number_leg * 3 ] = current_state.position[number_leg * 3]  - (cmd_vel * COXA_AXIS[number_leg]);
+           }
+           else {
+               target_state.position[number_leg * 3 + 1] = current_state.position[number_leg * 3 + 1]  + (FEMUR_ANGLE * FEMUR_AXIS[number_leg]);
+           }
+            std::cout <<target_state.name [number_leg * 3+1] <<" = " << target_state.position [number_leg * 3+1] <<std::endl;
+            std::cout <<target_state.name [number_leg * 3] <<" = " << target_state.position [number_leg * 3] <<std::endl;
+      }
+
+  ros::Duration(2.0).sleep();
+        return target_state;
 }
 
 
