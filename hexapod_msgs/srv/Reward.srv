@@ -1,0 +1,6 @@
+bool request
+---
+float64 reward_general
+float64 reward_odometry
+float64 reward_gyroscope
+string result

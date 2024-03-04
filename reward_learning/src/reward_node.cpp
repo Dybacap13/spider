@@ -6,7 +6,7 @@ int main( int argc, char **argv )
     ros::NodeHandle nh;
     Reward reward( nh);
     while (ros::ok()){
-        reward.calculatorReward();
+        //reward.calculatorReward();
         //ros::Duration(2.0).sleep();
         ros::spinOnce();
 

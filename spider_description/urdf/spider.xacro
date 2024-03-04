@@ -293,7 +293,7 @@
           <gaussianNoise>0</gaussianNoise>
         </plugin>
       </gazebo>
-
+<!--
     <plugin name="p3d_base_controller" filename="libgazebo_ros_p3d.so">
         <topicName>/aaaaaaaa</topicName>
          <alwaysOn>true</alwaysOn>
@@ -304,7 +304,7 @@
          <frameName>world</frameName>
          <xyzOffsets>0 0 0</xyzOffsets>
          <rpyOffsets>0 0 0</rpyOffsets>
-       </plugin>
+       </plugin>-->
 
 <gazebo>
     <plugin name="gazebo_ros_control" filename=" libgazebo_ros_p3d">

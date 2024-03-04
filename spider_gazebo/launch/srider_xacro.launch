@@ -21,6 +21,7 @@
 <rosparam command="load" file="$(find spider_description)/params/dynamixel.yaml" />
 <rosparam command="load" file="$(find spider_description)/params/joystick_ds3.yaml" />
 <rosparam command="load" file="$(find move_feet)/config/param_move_feet.yaml" />
+<rosparam command="load" file="$(find reward_learning)/config/reward.yaml" />
 
 
 </launch>

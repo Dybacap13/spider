@@ -2,6 +2,7 @@
 #include <hexapod_msgs/MoveFeet.h>
 #include <std_msgs/Bool.h>
 #include <sensor_msgs/JointState.h>
+#include <hexapod_msgs/Reward.h>
 
 
 
@@ -20,6 +21,8 @@ private:
     ros::Subscriber reverse_position_sub;
 
     ros::Publisher joint_states_pub;
+    ros::ServiceClient client_;
+
 
 
     sensor_msgs::JointState current_state;
@@ -56,9 +59,13 @@ private:
 
 
 
-    sensor_msgs::JointState upAndMoveLegs(std::vector<bool>);
+    sensor_msgs::JointState moveLegs(std::vector<bool> );
+     sensor_msgs::JointState upLegs(std::vector<bool>);
     sensor_msgs::JointState downLegs(std::vector<bool>);
     sensor_msgs::JointState reverseTrueLegsAndUpFalseLegs(std::vector<bool>);
+    int reward = 0;
+    int reward_gyroscope = 0;
+    int reward_odometry = 0;
 
 
 

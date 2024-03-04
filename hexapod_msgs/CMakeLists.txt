@@ -23,6 +23,12 @@ add_message_files(
    MoveFeet.msg
 )
 
+add_service_files(
+  FILES
+  Reward.srv
+
+)
+
 ## Generate added messages and services with any dependencies listed here
 generate_messages(
    DEPENDENCIES std_msgs geometry_msgs
