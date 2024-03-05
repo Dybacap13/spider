@@ -29,5 +29,5 @@ include_directories(
 add_executable( test_tripod_gait src/test_tripod_gait.cpp )
 target_link_libraries( test_tripod_gait ${catkin_LIBRARIES} )
 
-# add_executable( test_wrong_gait src/test_wrong_gait.cpp )
-# target_link_libraries( test_wrong_gait ${catkin_LIBRARIES} )
+add_executable( test_wrong_gait src/test_wrong_gait.cpp )
+target_link_libraries( test_wrong_gait ${catkin_LIBRARIES} )

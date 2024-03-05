@@ -68,7 +68,7 @@ void MoveFeet::legsCallback (hexapod_msgs::MoveFeet move_feet){
     std::vector<bool>reverse_command = {!last_command[0], !last_command[1], !last_command[2], !last_command[3], !last_command[4],!last_command[5]};
 
     interpolationOfAngles(current_state, upLegs(last_command));
-    ros::Duration(0.3).sleep();
+    ros::Duration(0.25).sleep();
 
     if (!client_.call(srv)){
         std::cout << "Failed to call service /calculator_reward" << std::endl;
@@ -91,11 +91,11 @@ void MoveFeet::legsCallback (hexapod_msgs::MoveFeet move_feet){
 
     //все норм
     interpolationOfAngles(current_state, moveLegs(last_command));
-    ros::Duration(0.3).sleep();
+    ros::Duration(0.25).sleep();
     interpolationOfAngles(current_state, downLegs(last_command));
     //ros::Duration(0.3).sleep();
     interpolationOfAngles(current_state, reverseTrueLegsAndUpFalseLegs(last_command));
-    ros::Duration(0.3).sleep();
+    ros::Duration(0.25).sleep();
     interpolationOfAngles(current_state, downLegs(reverse_command));
     reward_gyroscope = srv.response.reward_general;
 
