@@ -20,6 +20,14 @@ int main(int argc, char **argv) {
     right.cmd_vel = 0.5;
 
 
+    // left.legs = {true, true, false, false, true, true};
+    // left.cmd_vel = 0.5;
+
+    // right.legs = {false, true, true, true, true, false};
+    // right.cmd_vel = 0.5;
+
+
+
 
 
     while(ros::ok()){
