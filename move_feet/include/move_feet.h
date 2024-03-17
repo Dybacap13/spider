@@ -3,6 +3,7 @@
 #include <std_msgs/Bool.h>
 #include <sensor_msgs/JointState.h>
 #include <hexapod_msgs/Reward.h>
+#include <hexapod_msgs/MoveFeetLearning.h>
 
 
 
@@ -14,6 +15,7 @@ public:
 
 private:
     ros::NodeHandle nh;
+    ros::ServiceServer service_;
 
     ros::Subscriber legs_sub;
     ros::Subscriber joint_states_sub;
@@ -54,23 +56,18 @@ private:
     void interpolationOfAngles(sensor_msgs::JointState , sensor_msgs::JointState );
     void jointStatesPublisher(sensor_msgs::JointState);
     void reversePosition();
+
+    bool init_service(hexapod_msgs::MoveFeetLearning::Request &req,
+                        hexapod_msgs::MoveFeetLearning::Response &res);
     //void downLegs(bool reverse);
 
-
-
-
     sensor_msgs::JointState moveLegs(std::vector<bool> );
-     sensor_msgs::JointState upLegs(std::vector<bool>);
+    sensor_msgs::JointState upLegs(std::vector<bool>);
     sensor_msgs::JointState downLegs(std::vector<bool>);
     sensor_msgs::JointState reverseTrueLegsAndUpFalseLegs(std::vector<bool>);
     int reward = 0;
     int reward_gyroscope = 0;
     int reward_odometry = 0;
-
-
-
-
-
 
 
 };

@@ -29,10 +29,97 @@ MoveFeet::MoveFeet(ros::NodeHandle nh_): nh(nh_) {
 
     client_ = nh_.serviceClient<hexapod_msgs::Reward>(
              "/calculator_reward");
+
+    service_ = nh_.advertiseService("/move_feet_learning",
+                                          &MoveFeet::init_service, this);
     ROS_INFO("MoveFeet ready");
 
 
 }
+
+bool MoveFeet::init_service(hexapod_msgs::MoveFeetLearning::Request &req,
+                  hexapod_msgs::MoveFeetLearning::Response &res){
+
+    // получаем вектор ног и скорость
+    auto move_feet = req;
+    cmd_vel = move_feet.legs.cmd_vel;
+
+    // запрос на получение награды
+    hexapod_msgs::Reward srv;
+    srv.request.legs = move_feet.legs;
+
+
+    for (auto number_leg = 0; number_leg < move_feet.legs.legs.size(); number_leg ++){
+        last_command[number_leg] = move_feet.legs.legs[number_leg];
+    }
+
+    std::vector<bool>reverse_command = {!last_command[0], !last_command[1], !last_command[2], !last_command[3], !last_command[4],!last_command[5]};
+
+    interpolationOfAngles(current_state, upLegs(last_command));
+    ros::Duration(0.25).sleep();
+
+    // отправляем запрос
+
+
+    if (!client_.call(srv)){
+        std::cout << "Failed to call service /calculator_reward" << std::endl;
+        interpolationOfAngles(current_state, downLegs(last_command));
+        res.result = "error";
+        res.reward_general = 0.0;
+        res.reward_odometry = 0.0;
+        res.reward_gyroscope = 0.0;
+        return true; }
+
+    if (srv.response.result == "wait") {
+        ROS_INFO ("INIT SERVER COMPLETE");
+        client_.call(srv);
+
+    }
+
+    //отклонились
+    if (srv.response.reward_gyroscope < reward_gyroscope ){
+        reward_gyroscope = srv.response.reward_general;
+        interpolationOfAngles(current_state, downLegs(last_command));
+
+        // сохраняем последнюю награду
+        reward = srv.response.reward_general;
+        reward_odometry = srv.response.reward_odometry;
+
+        // отправляем награду обучению
+        res.reward_general = srv.response.reward_general;
+        res.reward_odometry = srv.response.reward_odometry;
+        res.reward_gyroscope = srv.response.reward_gyroscope;
+        res.result = "balance lost";
+        return true;
+    }
+
+
+    //все норм
+    interpolationOfAngles(current_state, moveLegs(last_command));
+    ros::Duration(0.25).sleep();
+    interpolationOfAngles(current_state, downLegs(last_command));
+    //ros::Duration(0.3).sleep();
+    interpolationOfAngles(current_state, reverseTrueLegsAndUpFalseLegs(last_command));
+    ros::Duration(0.25).sleep();
+    interpolationOfAngles(current_state, downLegs(reverse_command));
+    reward_gyroscope = srv.response.reward_general;
+
+
+    // сохраняем
+    reward = srv.response.reward_general;
+    reward_odometry = srv.response.reward_odometry;
+    reward_gyroscope = srv.response.reward_general;
+
+
+    res.reward_general = srv.response.reward_general;
+    res.reward_odometry = srv.response.reward_odometry;
+    res.reward_gyroscope = srv.response.reward_gyroscope;
+    res.result = "balance saved";
+    return true;
+}
+
+
+
 
 
 void MoveFeet::moveFeetModeCallback(std_msgs::Bool msg){
@@ -54,50 +141,48 @@ void MoveFeet::jointStatesCallback(sensor_msgs::JointState msg){
 
 void MoveFeet::legsCallback (hexapod_msgs::MoveFeet move_feet){
 
-    hexapod_msgs::Reward srv;
-    std_msgs::Bool aaa;
-    aaa.data = true;
-    srv.request.request = true;
-    cmd_vel = move_feet.cmd_vel;
-    ROS_INFO("1");
+    // hexapod_msgs::Reward srv;
+    // srv.request.request = true;
+    // cmd_vel = move_feet.cmd_vel;
+    // ROS_INFO("1");
 
-    for (auto number_leg = 0; number_leg < move_feet.legs.size(); number_leg ++){
-        last_command[number_leg] = move_feet.legs[number_leg];
-    }
+    // for (auto number_leg = 0; number_leg < move_feet.legs.size(); number_leg ++){
+    //     last_command[number_leg] = move_feet.legs[number_leg];
+    // }
 
-    std::vector<bool>reverse_command = {!last_command[0], !last_command[1], !last_command[2], !last_command[3], !last_command[4],!last_command[5]};
+    // std::vector<bool>reverse_command = {!last_command[0], !last_command[1], !last_command[2], !last_command[3], !last_command[4],!last_command[5]};
 
-    interpolationOfAngles(current_state, upLegs(last_command));
-    ros::Duration(0.25).sleep();
+    // interpolationOfAngles(current_state, upLegs(last_command));
+    // ros::Duration(0.25).sleep();
 
-    if (!client_.call(srv)){
-        std::cout << "Failed to call service /calculator_reward" << std::endl;
-        interpolationOfAngles(current_state, downLegs(last_command));
-        return; }
+    // if (!client_.call(srv)){
+    //     std::cout << "Failed to call service /calculator_reward" << std::endl;
+    //     interpolationOfAngles(current_state, downLegs(last_command));
+    //     return; }
 
-    if (srv.response.result == "wait") {
-        ROS_INFO ("INIT SERVER COMPLETE");
-        client_.call(srv);
-    }
+    // if (srv.response.result == "wait") {
+    //     ROS_INFO ("INIT SERVER COMPLETE");
+    //     client_.call(srv);
+    // }
 
-    //отклонились
+    // //отклонились
 
-    if (srv.response.reward_general < reward_gyroscope ){
-        reward_gyroscope = srv.response.reward_general;
-        interpolationOfAngles(current_state, downLegs(last_command));
-        return;
-    }
+    // if (srv.response.reward_general < reward_gyroscope ){
+    //     reward_gyroscope = srv.response.reward_general;
+    //     interpolationOfAngles(current_state, downLegs(last_command));
+    //     return;
+    // }
 
 
-    //все норм
-    interpolationOfAngles(current_state, moveLegs(last_command));
-    ros::Duration(0.25).sleep();
-    interpolationOfAngles(current_state, downLegs(last_command));
-    //ros::Duration(0.3).sleep();
-    interpolationOfAngles(current_state, reverseTrueLegsAndUpFalseLegs(last_command));
-    ros::Duration(0.25).sleep();
-    interpolationOfAngles(current_state, downLegs(reverse_command));
-    reward_gyroscope = srv.response.reward_general;
+    // //все норм
+    // interpolationOfAngles(current_state, moveLegs(last_command));
+    // ros::Duration(0.25).sleep();
+    // interpolationOfAngles(current_state, downLegs(last_command));
+    // //ros::Duration(0.3).sleep();
+    // interpolationOfAngles(current_state, reverseTrueLegsAndUpFalseLegs(last_command));
+    // ros::Duration(0.25).sleep();
+    // interpolationOfAngles(current_state, downLegs(reverse_command));
+    // reward_gyroscope = srv.response.reward_general;
 
 
 }
