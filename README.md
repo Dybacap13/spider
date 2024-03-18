@@ -4,6 +4,16 @@
 <a href=https://github.com/KevinOchs/hexapod_ros>Golem</a>
 
 
+## На данный момент сделано
+        
+1) Расчёт награды
+
+    считает награду на показаниях гироскопа и координаты ( движения робота)
+2) Алгоритм обучения
+
+    нейронная сеть из шесть нейронов, каждый нейрон - одна нога робота
+        
+#### Все результаты испытаний расположены /reinforcement_learning/statistics
 
 ## Инструкция 
 
@@ -18,13 +28,25 @@
 *Запускаем ноду, которая считает обратную кинематику и генерирует походку* 
 
      rosrun hexapod_controller hexapod_controller 
-     
+    
+*Запускаем ноду, которая считает награду*
+    
+    rosrun reward_learning calculator_reward 
+
+*Запускаем ноду, которая генерирует движение ногами на основе обучения*
+    
+    rosrun move_feet move_feet 
+    
 *Публикуем в топики*
 
      /state(std_msgs/Bool) - true
-     /cmd_vel(geometry_msgs/Twist) - скорость
-    
+     /move_legs/mode(std_msgs/Bool) - true
+ 
+*Запускаем ноду, которая начёт алгоритм обучения*
 
+    rosrun reinforcement_learning reinforcement_learning 
+    
+    
 
 
 ##  Расчёт награды
@@ -39,7 +61,7 @@
     
 *Одометрия* 
 
-    /odometry/calculated(nav_msgs/Odometry) - читает координаты робота, относительно нулевой точки
+    /gazebo/model_states(gazebo_msgs/ModelStates) - читает координаты робота, относительно нулевой точки
 
 *Награда* 
 
@@ -64,23 +86,9 @@
     /move_legs/mode
     Тип сообщения: std_msgs/Bool 
     
-*Публикуем в топик ноги, которые двигаем*
+*Вызываем сервис и отправляем запрос какими ногами двигать, скорость*
 
-    /move_legs/legs
-    Тип сообщения:hexapod_msgs/MoveFeet
-            std::vector<bool> legs[6] (true - двигаем ногой)
-            double cmd_vel - скорость поворота coxa
-      
-    
-*Чтобы отменить предыдущее действие, публикуем в топик*
-        
-    /move_legs/reverse_position
-    Тип сообщения: std_msgs/Bool 
-    
-
-
-
-
+    /move_feet_learning
 
 
 ##  Nodes
