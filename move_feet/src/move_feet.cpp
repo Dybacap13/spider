@@ -51,7 +51,9 @@ bool MoveFeet::init_service(hexapod_msgs::MoveFeetLearning::Request &req,
 
     for (auto number_leg = 0; number_leg < move_feet.legs.legs.size(); number_leg ++){
         last_command[number_leg] = move_feet.legs.legs[number_leg];
+        std::cout << last_command[number_leg] << "   ";
     }
+     std::cout <<  "   " << std::endl;;
 
     std::vector<bool>reverse_command = {!last_command[0], !last_command[1], !last_command[2], !last_command[3], !last_command[4],!last_command[5]};
 
@@ -199,16 +201,16 @@ void MoveFeet::interpolationOfAngles(sensor_msgs::JointState current, sensor_msg
 
         for (int i = 0; i < current_state.name.size(); i++){
             interpolation_angles_pub.position[i] = target.position[i] * INTERPOLATION_COEFFICIENT + interpolation_angles_pub.position[i] * (1 - INTERPOLATION_COEFFICIENT);
-            std::cout <<interpolation_angles_pub.name [i] <<" = " << interpolation_angles_pub.position [i] <<std::endl;
+            //std::cout <<interpolation_angles_pub.name [i] <<" = " << interpolation_angles_pub.position [i] <<std::endl;
         }
 
         jointStatesPublisher(interpolation_angles_pub);
 
         current_state = interpolation_angles_pub;
 
-        std::cout <<"_________________"  <<std::endl;
-        std::cout <<""  <<std::endl;
-        std::cout <<""  <<std::endl;
+        //std::cout <<"_________________"  <<std::endl;
+        //std::cout <<""  <<std::endl;
+        //std::cout <<""  <<std::endl;
     }
 
 }

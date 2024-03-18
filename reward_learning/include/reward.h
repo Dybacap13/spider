@@ -4,6 +4,7 @@
 #include <nav_msgs/Odometry.h>
 #include <std_msgs/Float32.h>
 #include <hexapod_msgs/Reward.h>
+#include <gazebo_msgs/ModelStates.h>
 
 class Reward {
 public:
@@ -23,15 +24,15 @@ private:
   ros::ServiceServer service_;
 
   void gyroscopeCallback(sensor_msgs::Imu gyroscope_msg);
-  void odometryCallback(nav_msgs::Odometry odometry_msg);
+  void odometryCallback(gazebo_msgs::ModelStates odometry_msg);
 
   bool init_service(hexapod_msgs::Reward::Request &req,
                       hexapod_msgs::Reward::Response &res);
 
   sensor_msgs::Imu gyroscope;
-  nav_msgs::Odometry odometry;
+  gazebo_msgs::ModelStates odometry;
   sensor_msgs::Imu gyroscope_last;
-  nav_msgs::Odometry odometry_last;
+  gazebo_msgs::ModelStates odometry_last;
 
   std::vector<double> THRESHOLD_GYROSCOPE;
   double THRESHOLD_COORDINATES;
@@ -44,6 +45,10 @@ private:
   bool gyroscope_last_bool = false;
   bool odometry_last_bool = false;
   //hexapod_msgs::MoveFeet vector_legs;
+  int current_time = 0;
+
+
+
 
 
 
@@ -53,7 +58,7 @@ Reward::Reward(ros::NodeHandle nh_) : nh(nh_) {
   gyroscope_sub = nh_.subscribe("/spider/gyroscope_data", 5,
                                 &Reward::gyroscopeCallback, this);
   odometry_sub =
-      nh_.subscribe("/odometry/calculated", 5, &Reward::odometryCallback, this);
+      nh_.subscribe("/gazebo/model_states", 5, &Reward::odometryCallback, this);
 
   reward_gyroscope_pub = nh_.advertise<std_msgs::Float32>("/reward/reward_gyroscope", 1000);
   reward_odometry_pub = nh_.advertise<std_msgs::Float32>("/reward/reward_odometry", 1000);
@@ -80,17 +85,23 @@ bool Reward::init_service(hexapod_msgs::Reward::Request &req,
 
     hexapod_msgs::MoveFeet vector_legs = req.legs;
     int count = 0;
+    std::cout << "______________________ "<<std::endl;
     for (int i = 0; i < 6; i++){
-        if (vector_legs.legs[i]) count++;
+        std::cout << "vector_legs.legs = " <<vector_legs.legs[i]<<std::endl;
+        if (vector_legs.legs[i] == true) count++;
     }
+    std::cout << "count = " <<count<<std::endl;
+    std::cout << "______________________ "<<std::endl;
     std::string result_reward;
 
     result_reward = calculatorReward(count);
+    current_time ++;
 
     res.reward_general = reward;
     res.reward_odometry = reward_odometry;
     res.reward_gyroscope = reward_gyroscope;
     res.result = result_reward;
+
     return true;
 }
 
@@ -109,7 +120,7 @@ void Reward::gyroscopeCallback(sensor_msgs::Imu gyroscope_msg) {
 
 }
 
-void Reward::odometryCallback(nav_msgs::Odometry odometry_msg) {
+void Reward::odometryCallback(gazebo_msgs::ModelStates odometry_msg) {
 
   odometry = odometry_msg;
   odometry_bool = true;
@@ -127,29 +138,29 @@ std::string Reward::calculatorReward( int count) {
 
 
 
+    std::cout << "current_time = " <<current_time<<std::endl;
     // расчёт одометрии
     double distance =
-      sqrt(pow((odometry.pose.pose.position.x - odometry_last.pose.pose.position.x), 2) +
-           pow((odometry.pose.pose.position.y - odometry_last.pose.pose.position.y), 2));
+      sqrt(pow((odometry.pose[1].position.x - odometry_last.pose[1].position.x), 2) +
+           pow((odometry.pose[1].position.y - odometry_last.pose[1].position.y), 2));
 
-    std::cout << "odometry.pose.pose.position.x = "<< odometry.pose.pose.position.x <<std::endl;
-    std::cout << "odometry.pose.pose.position.y = "<< odometry.pose.pose.position.y <<std::endl;
-    std::cout << "odometry_last.pose.pose.position.x = "<< odometry.pose.pose.position.x <<std::endl;
-    std::cout << "odometry_last.pose.pose.position.y = "<< odometry.pose.pose.position.y <<std::endl;
+    std::cout << "odometry.pose[1].position.x = "<< odometry.pose[1].position.x <<std::endl;
+    std::cout << "odometry.pose[1].position.y = "<< odometry.pose[1].position.y <<std::endl;
+    std::cout << "odometry_last.pose[1].position.x = "<< odometry.pose[1].position.x <<std::endl;
+    std::cout << "odometry_last.pose[1].position.y = "<< odometry.pose[1].position.y <<std::endl;
     std::cout << "distance = "<< distance <<std::endl;
 
 
 
     if (distance < THRESHOLD_COORDINATES)
-        reward_odometry = reward_odometry - 0.0;
+        reward_odometry = reward_odometry - 2.0 * (current_time/TIME_ITERATION);
      else
         reward_odometry = reward_odometry + 2.0;
 
     std_msgs::Float32 msg;
     msg.data = reward_odometry;
     reward_odometry_pub.publish(msg);
-    // пока заглушим
-    reward_odometry =0.0;
+
     std::cout << "reward_odometry = " <<reward_odometry<<std::endl;
 
 
@@ -173,11 +184,9 @@ std::string Reward::calculatorReward( int count) {
       if(count <= 3)
       reward_gyroscope = reward_gyroscope + 1.0;
 
-    } else{
-        if (count = 5) reward_gyroscope = reward_gyroscope - 5.0;
-
-
-      reward_gyroscope = reward_gyroscope + 5.0;
+    } else {
+        if (count > 5) reward_gyroscope = reward_gyroscope - 5.0 * (current_time/TIME_ITERATION);
+        else  reward_gyroscope = reward_gyroscope + 5.0;
 
     }
   msg.data = reward_gyroscope;
@@ -192,6 +201,7 @@ std::string Reward::calculatorReward( int count) {
   msg.data = reward;
   reward_pub.publish(msg);
   odometry_last = odometry;
+
   return "success";
-  ros::Duration(1.0).sleep();
+
 }

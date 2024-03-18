@@ -1,0 +1,6 @@
+<launch>
+
+<rosparam command="load" file="$(find reward_learning)/config/reward.yaml" />
+<node name="calculator_reward" pkg="reward_learning" type="calculator_reward" />
+
+</launch>

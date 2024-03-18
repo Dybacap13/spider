@@ -12,6 +12,7 @@ find_package(catkin REQUIRED COMPONENTS
   reward_learning
   roscpp
   std_msgs
+  roslib
 )
 
 

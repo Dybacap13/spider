@@ -1,8 +1,11 @@
+#include <iostream>
+#include <fstream>
 #include <ros/ros.h>
+#include <ros/package.h>
 #include <std_msgs/Float32.h>
 #include <matrix.h>
 #include <hexapod_msgs/MoveFeetLearning.h>
-
+#include <ctime>
 
 
 class ReinforcementLearning {
@@ -20,6 +23,10 @@ private:
     double LEAK_RATE;
     int TIME_ITERATION;
     int ITERATION_SPIKE_IN;
+    std::vector<double> THRESHOLD_GYROSCOPE;
+    double THRESHOLD_COORDINATES;
+    std::string NAME_FILE_REWARD;
+    std::string NAME_FILE_LEGS;
 
 
     ros::NodeHandle nh;
@@ -27,6 +34,9 @@ private:
     ros::ServiceClient client_;
     void rewardCallback(std_msgs::Float32 msg);
     void falseInVectorLegs();
+    void writerParamReward(double reward_);
+    void writerParamLegs(hexapod_msgs::MoveFeet vector_legs_);
+    void writerInitParamTimeData();
 
 
 
@@ -35,10 +45,95 @@ private:
     double reward_odometry = 0.0;
     double reward = 0.0;
 
+    std::string path_to_pack = ros::package::getPath("reinforcement_learning");
+
 
 };
 
 
+void ReinforcementLearning::writerInitParamTimeData(){
+    std::ofstream out;
+    time_t now = time(0);
+    char* dt = ctime(&now);
+    std::string file = path_to_pack + NAME_FILE_REWARD;
+    out.open(file, std::ios::app);
+    if (out.is_open()){
+        out << "____________________________________" << std::endl;
+        out << dt << std::endl;
+        out << "" << std::endl;
+        out << "PARAMETERS" << std::endl;
+        out << "NUMBER_NEURON = " <<NUMBER_NEURON << std::endl;
+        out << "VOLTAGE_TRESHOLD = " <<VOLTAGE_TRESHOLD << std::endl;
+        out << "LEARNING_RATE = " <<LEARNING_RATE << std::endl;
+        out << "LEAK_RATE = " <<LEAK_RATE << std::endl;
+        out << "TIME_ITERATION = " <<TIME_ITERATION << std::endl;
+        out << "ITERATION_SPIKE_IN = " << ITERATION_SPIKE_IN << std::endl;
+        out << "THRESHOLD_COORDINATES = " <<THRESHOLD_COORDINATES << std::endl;
+        out << "THRESHOLD_GYROSCOPE = ";
+        for ( int i = 0; i < 3; i++){
+            out << THRESHOLD_GYROSCOPE[i]<< "  ";
+        }
+        out << " " << std::endl;
+    }
+    out.close();
+    file = path_to_pack + NAME_FILE_LEGS;
+    out.open(file, std::ios::app);
+    if (out.is_open())
+    {
+        out << "____________________________________" << std::endl;
+        out << dt << std::endl;
+        out << "" << std::endl;
+        out << "PARAMETERS" << std::endl;
+        out << "NUMBER_NEURON = " <<NUMBER_NEURON << std::endl;
+        out << "VOLTAGE_TRESHOLD = " <<VOLTAGE_TRESHOLD << std::endl;
+        out << "LEARNING_RATE = " <<LEARNING_RATE << std::endl;
+        out << "LEAK_RATE = " <<LEAK_RATE << std::endl;
+        out << "TIME_ITERATION = " <<TIME_ITERATION << std::endl;
+        out << "ITERATION_SPIKE_IN = " << ITERATION_SPIKE_IN << std::endl;
+        out << "THRESHOLD_COORDINATES = " <<THRESHOLD_COORDINATES << std::endl;
+        out << "THRESHOLD_GYROSCOPE = ";
+        for ( int i = 0; i < 3; i++){
+            out << THRESHOLD_GYROSCOPE[i]<< "  ";
+        }
+        out << " " << std::endl;
+    }
+    out.close();
+
+
+}
+
+
+void ReinforcementLearning::writerParamReward(double reward_){
+    std::ofstream out;
+    std::string file = path_to_pack + NAME_FILE_REWARD;
+    out.open(file, std::ios::app);
+    if (out.is_open())
+    {
+        std::cout << "writer reward" << std::endl;
+        out << reward_ << std::endl;
+    }
+    out.close();
+
+}
+
+void ReinforcementLearning::writerParamLegs(hexapod_msgs::MoveFeet vector_legs_){
+    std::ofstream out;
+
+    std::string file = path_to_pack + NAME_FILE_LEGS;
+    out.open(file, std::ios::app);
+    if (out.is_open())
+    {
+        std::cout << "writer legs" << std::endl;
+        for (int i = 0 ; i < vector_legs_.legs.size(); i++){
+            if (vector_legs_.legs[i] == true) out << 1 <<"    " ;
+            else out << 0 <<"    " ;
+        }
+
+        out << " " << std::endl;
+    }
+    out.close();
+
+}
 
 
 ReinforcementLearning::ReinforcementLearning(ros::NodeHandle nh_) : nh(nh_) {
@@ -51,10 +146,15 @@ ReinforcementLearning::ReinforcementLearning(ros::NodeHandle nh_) : nh(nh_) {
   ros::param::get("LEAK_RATE", LEAK_RATE);
   ros::param::get("TIME_ITERATION", TIME_ITERATION);
   ros::param::get("ITERATION_SPIKE_IN", ITERATION_SPIKE_IN);
+  ros::param::get("NAME_FILE_REWARD", NAME_FILE_REWARD);
+  ros::param::get("NAME_FILE_LEGS", NAME_FILE_LEGS);
+  ros::param::get("THRESHOLD_GYROSCOPE", THRESHOLD_GYROSCOPE);
+  ros::param::get("THRESHOLD_COORDINATES", THRESHOLD_COORDINATES);
   client_ = nh_.serviceClient<hexapod_msgs::MoveFeetLearning>(
            "/move_feet_learning");
 
  falseInVectorLegs();
+ writerInitParamTimeData();
 
 
 
@@ -127,6 +227,7 @@ void ReinforcementLearning::algoritm(){
 
             // считаем ток
             current_neuron = weight_in * spike_in + weight_gyro * spike_gyro + sum_contribution_neighbours;
+            std::cout <<" current_neuron =  "<< current_neuron <<std::endl;
             // считаем потенциал
             voltage.get_data()[neuron] = voltage_last.get_data()[neuron]/LEAK_RATE + current_neuron;
 
@@ -177,16 +278,24 @@ void ReinforcementLearning::algoritm(){
         for (unsigned int i = 0; i < spike_sgp.get_col() * spike_sgp.get_row(); i ++){
             spike_sgp_last.get_data()[i] = spike_sgp.get_data()[i];
             voltage_last.get_data()[i] =  voltage.get_data()[i];
+            std::cout <<" vector_legs.legs[i] =  "<< vector_legs.legs[i] <<std::endl;
+
         }
+
 
 
         std::cout <<" Weight in time =  "<< time <<std::endl;
         weight_sgp.output();
         std::cout <<" voltage in time =  "<< time <<std::endl;
         voltage.output();
+        std::cout <<" voltage_last in time =  "<< time <<std::endl;
+        voltage_last.output();
         std::cout <<" spike_sgp_last in time =  "<< time <<std::endl;
         spike_sgp_last.output();
         std::cout <<"reward = " << reward <<std::endl;
+        writerParamReward(reward);
+        writerParamLegs(vector_legs);
+        falseInVectorLegs();
 
     }
 
