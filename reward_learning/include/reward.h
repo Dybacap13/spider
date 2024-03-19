@@ -36,7 +36,7 @@ private:
 
   std::vector<double> THRESHOLD_GYROSCOPE;
   double THRESHOLD_COORDINATES;
-  int TIME_ITERATION;
+  double TIME_ITERATION;
   double reward_gyroscope = 0.0;
   double reward_odometry = 0.0;
   double reward = 0.0;
@@ -45,7 +45,7 @@ private:
   bool gyroscope_last_bool = false;
   bool odometry_last_bool = false;
   //hexapod_msgs::MoveFeet vector_legs;
-  int current_time = 0;
+  double current_time = 0.0;
 
 
 
@@ -185,7 +185,15 @@ std::string Reward::calculatorReward( int count) {
       reward_gyroscope = reward_gyroscope + 1.0;
 
     } else {
-        if (count > 5) reward_gyroscope = reward_gyroscope - 5.0 * (current_time/TIME_ITERATION);
+        if (count > 5) {
+            std::cout << "Aaa 6!" <<std::endl;
+            std::cout << "current_time = " <<current_time<<std::endl;
+            std::cout << "TIME_ITERATION = " <<TIME_ITERATION<<std::endl;
+            std::cout << "current_time/TIME_ITERATION = " <<current_time/TIME_ITERATION<<std::endl;
+            std::cout << " = " <<reward_gyroscope - 5.0 * (current_time/TIME_ITERATION)<<std::endl;
+
+            reward_gyroscope = reward_gyroscope - 5.0 * (current_time/TIME_ITERATION);}
+
         else  reward_gyroscope = reward_gyroscope + 5.0;
 
     }

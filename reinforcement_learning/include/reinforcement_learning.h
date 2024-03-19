@@ -21,7 +21,7 @@ private:
     double DELTA;
     double LEARNING_RATE;
     double LEAK_RATE;
-    int TIME_ITERATION;
+    double TIME_ITERATION;
     int ITERATION_SPIKE_IN;
     std::vector<double> THRESHOLD_GYROSCOPE;
     double THRESHOLD_COORDINATES;
@@ -188,9 +188,9 @@ void ReinforcementLearning::algoritm(){
     spike_sgp_last.zero();
     voltage.zero();
     voltage_last.zero();
-    spike_sgp_last.get_data()[0] = 1.0;
-    spike_sgp_last.get_data()[2] = 1.0;
-    spike_sgp_last.get_data()[4] = 1.0;
+    //spike_sgp_last.get_data()[0] = 1.0;
+    //spike_sgp_last.get_data()[2] = 1.0;
+    //spike_sgp_last.get_data()[4] = 1.0;
 
 
     std::cout <<"Random weight CPG" <<std::endl;
@@ -269,9 +269,16 @@ void ReinforcementLearning::algoritm(){
         // занулить главную диагональ
         weight_sgp.eye_zero();
 
+        weight_in = weight_in + LEARNING_RATE * (double)(rand())/RAND_MAX * reward;
+        weight_gyro = weight_gyro + LEARNING_RATE * (double)(rand())/RAND_MAX * reward;
+
 
         // импульс in
-        if( time % ITERATION_SPIKE_IN == 0) spike_in = 0.0;
+        if( time % ITERATION_SPIKE_IN == 0) {
+            if (spike_in == 0.0) spike_in = 1.0;
+            else spike_in = 0.0;
+
+        }
 
         // записываем в память текущее состояние потенциала нейрона
         // здесь мы сохраняем спайки  прошлой итерации

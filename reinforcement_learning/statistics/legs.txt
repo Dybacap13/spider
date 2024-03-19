@@ -106,3 +106,197 @@ PS Сделала начальные спайки 1 0 1 0 1 0
 0    0    0    0    0    0     
 0    0    0    0    0    0     
 0    0    0    0    0    0     
+
+____________________________________
+Tue Mar 19 10:14:50 2024
+
+
+PARAMETERS
+NUMBER_NEURON = 6
+VOLTAGE_TRESHOLD = 0.4
+LEARNING_RATE = 0.1
+LEAK_RATE = 1.3
+TIME_ITERATION = 100
+ITERATION_SPIKE_IN = 20
+THRESHOLD_COORDINATES = 0.1
+THRESHOLD_GYROSCOPE = 0.05  0.05  0.5   
+1    1    1    1    1    1     
+1    1    1    1    1    1     
+1    1    1    1    1    1     
+1    1    1    1    1    1     
+1    1    1    1    1    1     
+1    1    1    1    1    1     
+1    1    1    1    1    1     
+1    1    1    1    1    1     
+1    1    1    1    1    1     
+1    1    1    1    1    1     
+1    1    1    1    1    1     
+1    1    1    1    1    1     
+1    1    1    1    1    1     
+1    1    1    1    1    1     
+1    1    1    1    1    1     
+1    1    1    1    1    1     
+1    1    1    1    1    1     
+1    1    1    1    1    1     
+1    1    1    1    1    1     
+1    1    1    1    1    1     
+____________________________________
+Tue Mar 19 10:20:37 2024
+
+
+PARAMETERS
+NUMBER_NEURON = 6
+VOLTAGE_TRESHOLD = 0.6
+LEARNING_RATE = 0.1
+LEAK_RATE = 1.3
+TIME_ITERATION = 100
+ITERATION_SPIKE_IN = 20
+THRESHOLD_COORDINATES = 0.1
+THRESHOLD_GYROSCOPE = 0.05  0.05  0.5   
+1    1    1    1    1    1     
+1    1    1    1    1    1     
+1    1    1    1    1    1     
+1    1    1    1    1    1     
+1    1    1    1    1    1     
+____________________________________
+Tue Mar 19 10:24:17 2024
+
+
+PARAMETERS
+NUMBER_NEURON = 6
+VOLTAGE_TRESHOLD = 0.6
+LEARNING_RATE = 0.1
+LEAK_RATE = 1.3
+TIME_ITERATION = 100
+ITERATION_SPIKE_IN = 20
+THRESHOLD_COORDINATES = 0.1
+THRESHOLD_GYROSCOPE = 0.05  0.05  0.5   
+1    1    1    1    1    1     
+1    1    1    1    1    1     
+1    1    1    1    1    1     
+____________________________________
+Tue Mar 19 10:26:28 2024
+
+
+PARAMETERS
+NUMBER_NEURON = 6
+VOLTAGE_TRESHOLD = 0.6
+LEARNING_RATE = 0.1
+LEAK_RATE = 1.3
+TIME_ITERATION = 100
+ITERATION_SPIKE_IN = 20
+THRESHOLD_COORDINATES = 0.1
+THRESHOLD_GYROSCOPE = 0.05  0.05  0.5   
+____________________________________
+Tue Mar 19 10:30:10 2024
+
+
+PARAMETERS
+NUMBER_NEURON = 6
+VOLTAGE_TRESHOLD = 0.6
+LEARNING_RATE = 0.1
+LEAK_RATE = 1.3
+TIME_ITERATION = 100
+ITERATION_SPIKE_IN = 20
+THRESHOLD_COORDINATES = 0.1
+THRESHOLD_GYROSCOPE = 0.05  0.05  0.5   
+1    1    1    1    1    1     
+1    1    1    1    1    1     
+1    1    1    1    1    1     
+1    1    1    1    1    1     
+1    1    1    1    1    1     
+1    1    1    0    1    1     
+1    1    1    1    1    1     
+1    1    1    1    1    1     
+1    1    1    1    1    1     
+1    1    1    1    1    1     
+1    1    1    1    1    1     
+1    1    1    1    1    1     
+1    1    1    1    1    1     
+1    1    1    1    1    1     
+1    1    1    1    1    1     
+1    1    1    0    1    1     
+1    0    0    0    0    0     
+0    0    0    0    0    0     
+0    0    0    0    0    0     
+0    0    0    0    0    0     
+0    0    0    0    0    0     
+0    0    0    0    0    0     
+1    1    1    1    1    1     
+1    1    1    1    1    1     
+1    1    1    1    1    1     
+1    1    1    1    1    1     
+1    1    1    1    1    1     
+1    1    1    1    1    1     
+1    1    1    1    1    1     
+1    1    1    1    1    1     
+1    1    1    1    1    1     
+1    1    1    1    1    1     
+1    1    1    1    1    1     
+1    1    1    1    1    1     
+1    1    1    1    1    1     
+1    1    1    1    1    1     
+1    1    1    1    1    1     
+1    0    1    0    1    1     
+0    0    1    0    1    1     
+0    0    1    0    0    1     
+0    0    0    0    0    0     
+0    0    0    0    0    0     
+0    0    0    0    0    0     
+0    0    0    0    0    0     
+0    0    0    0    0    0     
+0    0    0    0    0    0     
+0    0    0    0    0    0     
+0    0    0    0    0    0     
+0    0    0    0    0    0     
+0    0    0    0    0    0     
+0    0    0    0    0    0     
+0    0    0    0    0    0     
+0    0    0    0    0    0     
+0    0    0    0    0    0     
+0    0    0    0    0    0     
+0    0    0    0    0    0     
+0    0    0    0    0    0     
+0    0    0    0    0    0     
+0    0    0    0    0    0     
+0    0    0    0    0    0     
+0    0    0    0    0    0     
+1    1    1    1    1    1     
+1    1    1    1    1    1     
+1    1    1    1    1    1     
+1    1    1    1    1    1     
+1    1    1    1    1    1     
+1    1    1    1    1    1     
+1    1    1    1    1    1     
+1    1    1    1    1    1     
+1    1    1    1    1    1     
+1    1    1    1    1    1     
+1    1    1    1    1    1     
+1    1    1    1    1    1     
+1    1    1    1    1    1     
+1    1    1    1    1    1     
+1    1    1    1    1    1     
+1    1    1    1    1    1     
+1    1    1    1    1    1     
+1    1    1    1    1    1     
+1    1    1    1    1    1     
+1    1    1    1    1    1     
+1    1    1    1    1    1     
+1    1    1    1    1    1     
+1    1    1    1    1    1     
+1    1    1    1    1    1     
+1    1    1    1    1    1     
+1    1    1    1    1    1     
+1    1    1    1    1    1     
+1    1    1    1    1    1     
+1    1    1    1    1    1     
+1    1    1    1    1    1     
+1    1    1    1    1    1     
+1    1    1    1    1    1     
+1    1    1    1    1    1     
+1    1    1    1    1    1     
+1    1    1    1    1    1     
+1    1    1    1    1    1     
+1    1    1    1    1    1     
+1    1    1    1    1    1     
+1    1    1    1    1    1     
