@@ -177,6 +177,8 @@ std::string Reward::calculatorReward( int count) {
       abs(gyroscope_last.orientation.z - gyroscope.orientation.z) >
           THRESHOLD_GYROSCOPE[2]) {
 
+
+      std::cout << "---------------BALANCE LOST--------------- " <<std::endl;
       // отклонились
       if(count > 3)
       reward_gyroscope = reward_gyroscope - 2.0;
@@ -188,11 +190,12 @@ std::string Reward::calculatorReward( int count) {
         if (count > 5) {
             std::cout << "Aaa 6!" <<std::endl;
             std::cout << "current_time = " <<current_time<<std::endl;
-            std::cout << "TIME_ITERATION = " <<TIME_ITERATION<<std::endl;
-            std::cout << "current_time/TIME_ITERATION = " <<current_time/TIME_ITERATION<<std::endl;
-            std::cout << " = " <<reward_gyroscope - 5.0 * (current_time/TIME_ITERATION)<<std::endl;
+            //std::cout << "TIME_ITERATION = " <<TIME_ITERATION<<std::endl;
+            //std::cout << "current_time/TIME_ITERATION = " <<current_time/TIME_ITERATION<<std::endl;
+            //std::cout << " = " <<reward_gyroscope - 5.0 * (current_time/TIME_ITERATION)<<std::endl;
 
-            reward_gyroscope = reward_gyroscope - 5.0 * (current_time/TIME_ITERATION);}
+            //reward_gyroscope = reward_gyroscope - 5.0 * (current_time/TIME_ITERATION);}
+            reward_gyroscope = reward_gyroscope - 5.0;}
 
         else  reward_gyroscope = reward_gyroscope + 5.0;
 

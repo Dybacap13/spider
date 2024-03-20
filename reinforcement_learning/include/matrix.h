@@ -53,6 +53,8 @@ public:
     unsigned int get_col();
     double* get_data();
     void eye_zero();
+    void ones();
+
 
 
 
@@ -220,6 +222,13 @@ void Matrix::zero(){
         data[idx] = 0.0;
     }
 }
+
+void Matrix::ones(){
+    for (unsigned int idx = 0; idx < rows * cols; idx++){
+        data[idx] = 1.0;
+    }
+}
+
 
 
 void Matrix::one(){
