@@ -47,13 +47,19 @@ bool MoveFeet::init_service(hexapod_msgs::MoveFeetLearning::Request &req,
     // запрос на получение награды
     hexapod_msgs::Reward srv;
     srv.request.legs = move_feet.legs;
-
+    int count = 0;
 
     for (auto number_leg = 0; number_leg < move_feet.legs.legs.size(); number_leg ++){
         last_command[number_leg] = move_feet.legs.legs[number_leg];
+       if (last_command[number_leg]) count ++;
+
+
         std::cout << last_command[number_leg] << "   ";
     }
-     std::cout <<  "   " << std::endl;;
+    std::cout <<  " "<< std::endl;;
+
+
+     std::cout <<  "count_true=    "<< count << std::endl;;
 
     std::vector<bool>reverse_command = {!last_command[0], !last_command[1], !last_command[2], !last_command[3], !last_command[4],!last_command[5]};
 
@@ -78,6 +84,15 @@ bool MoveFeet::init_service(hexapod_msgs::MoveFeetLearning::Request &req,
 
     }
 
+    if (count == 0){
+        res.reward_general = srv.response.reward_general;
+        res.reward_odometry = srv.response.reward_odometry;
+        res.reward_gyroscope = srv.response.reward_gyroscope;
+        res.result = srv.response.result;
+        return true;
+
+    }
+
     //отклонились
     if (srv.response.reward_gyroscope < reward_gyroscope ){
         reward_gyroscope = srv.response.reward_general;
@@ -91,7 +106,7 @@ bool MoveFeet::init_service(hexapod_msgs::MoveFeetLearning::Request &req,
         res.reward_general = srv.response.reward_general;
         res.reward_odometry = srv.response.reward_odometry;
         res.reward_gyroscope = srv.response.reward_gyroscope;
-        res.result = "balance lost";
+        res.result = srv.response.result;
         return true;
     }
 
@@ -116,7 +131,7 @@ bool MoveFeet::init_service(hexapod_msgs::MoveFeetLearning::Request &req,
     res.reward_general = srv.response.reward_general;
     res.reward_odometry = srv.response.reward_odometry;
     res.reward_gyroscope = srv.response.reward_gyroscope;
-    res.result = "balance saved";
+    res.result = srv.response.result;
     return true;
 }
 
@@ -285,7 +300,7 @@ sensor_msgs::JointState MoveFeet::upLegs(std::vector<bool> command){
         // здесь код для ног true
         // поднимаем
         target_state.position[number_leg * 3 + 1] = current_state.position[number_leg * 3 + 1]  + (FEMUR_ANGLE * FEMUR_AXIS[number_leg]);
-        std::cout <<target_state.name [number_leg * 3+1] <<" = " << target_state.position [number_leg * 3+1] <<std::endl;
+       // std::cout <<target_state.name [number_leg * 3+1] <<" = " << target_state.position [number_leg * 3+1] <<std::endl;
 
      }
     //ros::Duration(2.0).sleep();
@@ -311,7 +326,7 @@ sensor_msgs::JointState MoveFeet::moveLegs(std::vector<bool> command){
         // здесь двигаем coxa
         target_state.position[number_leg * 3] = current_state.position[number_leg * 3]  + (cmd_vel * COXA_AXIS[number_leg]);
 
-        std::cout <<target_state.name [number_leg * 3] <<" = " << target_state.position [number_leg * 3] <<std::endl;
+      //  std::cout <<target_state.name [number_leg * 3] <<" = " << target_state.position [number_leg * 3] <<std::endl;
     }
 
     //ros::Duration(2.0).sleep();
@@ -328,7 +343,7 @@ sensor_msgs::JointState MoveFeet::downLegs(std::vector<bool> command){
         if (command[number_leg]){
             down_leg.position[number_leg * 3 + 1] = current_state.position[number_leg * 3 + 1]  - (FEMUR_ANGLE * FEMUR_AXIS[number_leg]);
         }
-        std::cout <<down_leg.name [number_leg * 3 + 1] <<" = " << down_leg.position [number_leg * 3 + 1] <<std::endl;
+        //std::cout <<down_leg.name [number_leg * 3 + 1] <<" = " << down_leg.position [number_leg * 3 + 1] <<std::endl;
 
     }
     //ros::Duration(2.0).sleep();
@@ -348,8 +363,8 @@ sensor_msgs::JointState MoveFeet::reverseTrueLegsAndUpFalseLegs(std::vector<bool
            else {
                target_state.position[number_leg * 3 + 1] = current_state.position[number_leg * 3 + 1]  + (FEMUR_ANGLE * FEMUR_AXIS[number_leg]);
            }
-            std::cout <<target_state.name [number_leg * 3+1] <<" = " << target_state.position [number_leg * 3+1] <<std::endl;
-            std::cout <<target_state.name [number_leg * 3] <<" = " << target_state.position [number_leg * 3] <<std::endl;
+           // std::cout <<target_state.name [number_leg * 3+1] <<" = " << target_state.position [number_leg * 3+1] <<std::endl;
+           // std::cout <<target_state.name [number_leg * 3] <<" = " << target_state.position [number_leg * 3] <<std::endl;
       }
 
  // ros::Duration(2.0).sleep();

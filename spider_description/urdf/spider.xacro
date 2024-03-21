@@ -72,7 +72,7 @@
     <!-- Joint properties -->
    <xacro:property name="joint_lower_limit" value="-2.00"/>
    <xacro:property name="joint_upper_limit" value="2.00"/>
-   <xacro:property name="joint_effort" value="6.0"/>
+   <xacro:property name="joint_effort" value="1.0"/>
    <xacro:property name="joint_velocity" value="0.524"/>
 
 

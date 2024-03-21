@@ -289,6 +289,7 @@ void ReinforcementLearning::algoritm(){
         reward = srv.response.reward_general;
         reward_odometry = srv.response.reward_odometry;
         reward_gyroscope = srv.response.reward_general;
+        std::string resust_str = srv.response.result;
 
         // обновляем веса
          for (unsigned int neuron = 0; neuron < NUMBER_NEURON * NUMBER_NEURON; neuron++ ){
@@ -300,20 +301,31 @@ void ReinforcementLearning::algoritm(){
         }
         // занулить главную диагональ
         weight_sgp.eye_zero();
+        spike_gyro.zero();
+
 
         for (unsigned int neuron = 0; neuron < NUMBER_NEURON; neuron++ ){
             if (spike_sgp.get_data()[neuron] == 1.0) {
             weight_in.get_data()[neuron] = weight_in.get_data()[neuron] + LEARNING_RATE * (double)(rand())/RAND_MAX * reward;
             weight_gyro.get_data()[neuron] = weight_gyro.get_data()[neuron] + LEARNING_RATE * (double)(rand())/RAND_MAX * reward;
+            if (resust_str == "balance saved"){
+                spike_gyro.get_data()[neuron] = 1.0;
+            }
             }
        }
 
+        if (resust_str == "balance lost"){
+            std::cout <<"Duration"<<std::endl;
+            ros::Duration(2.0).sleep();
+        }
 
-        // // импульс in
-        // if( time  == ITERATION_SPIKE_IN ) {
-        //     if (spike_in == 0.0) spike_in = 1.0;
-        //     else spike_in = 0.0;
-        // }
+
+        //импульс in
+        if( time  % ITERATION_SPIKE_IN == 0.0 && time != 0  ) {
+            if (spike_in.get_data()[0] == 0.0)  spike_in.ones();
+            else spike_in.zero();
+        }
+        std::cout << "OSTATOK = "<< time  % ITERATION_SPIKE_IN<< std::endl;
 
         // записываем в память текущее состояние потенциала нейрона
         for (unsigned int i = 0; i < NUMBER_NEURON; i ++){
@@ -374,6 +386,7 @@ void ReinforcementLearning::algoritm(){
         spike_in.output();
 
         std::cout <<"reward = " << reward <<std::endl;
+        std::cout <<"resust_str = " << resust_str<<std::endl;
         writerParamReward(reward);
         writerParamLegs(vector_legs);
         falseInVectorLegs();

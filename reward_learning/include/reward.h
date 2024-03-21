@@ -45,7 +45,9 @@ private:
   bool gyroscope_last_bool = false;
   bool odometry_last_bool = false;
   //hexapod_msgs::MoveFeet vector_legs;
-  double current_time = 0.0;
+  double current_time = -1.0;
+
+  std::string result_str;
 
 
 
@@ -100,7 +102,7 @@ bool Reward::init_service(hexapod_msgs::Reward::Request &req,
     res.reward_general = reward;
     res.reward_odometry = reward_odometry;
     res.reward_gyroscope = reward_gyroscope;
-    res.result = result_reward;
+    res.result = result_str;
 
     return true;
 }
@@ -151,11 +153,12 @@ std::string Reward::calculatorReward( int count) {
     std::cout << "distance = "<< distance <<std::endl;
 
 
-
-    if (distance < THRESHOLD_COORDINATES)
-        reward_odometry = reward_odometry - 2.0 * (current_time/TIME_ITERATION);
-     else
-        reward_odometry = reward_odometry + 2.0;
+    if (count != 0) {
+        if (distance < THRESHOLD_COORDINATES)
+            reward_odometry = reward_odometry - 2.0 * (current_time/TIME_ITERATION);
+         else
+            reward_odometry = reward_odometry + 2.0;
+    }
 
     std_msgs::Float32 msg;
     msg.data = reward_odometry;
@@ -176,6 +179,7 @@ std::string Reward::calculatorReward( int count) {
           THRESHOLD_GYROSCOPE[1] ||
       abs(gyroscope_last.orientation.z - gyroscope.orientation.z) >
           THRESHOLD_GYROSCOPE[2]) {
+        result_str = "balance lost";
 
 
       std::cout << "---------------BALANCE LOST--------------- " <<std::endl;
@@ -187,17 +191,23 @@ std::string Reward::calculatorReward( int count) {
       reward_gyroscope = reward_gyroscope + 1.0;
 
     } else {
+
         if (count > 5) {
             std::cout << "Aaa 6!" <<std::endl;
             std::cout << "current_time = " <<current_time<<std::endl;
-            //std::cout << "TIME_ITERATION = " <<TIME_ITERATION<<std::endl;
-            //std::cout << "current_time/TIME_ITERATION = " <<current_time/TIME_ITERATION<<std::endl;
-            //std::cout << " = " <<reward_gyroscope - 5.0 * (current_time/TIME_ITERATION)<<std::endl;
+            reward_gyroscope = reward_gyroscope - 5.0;
+            result_str = "balance lost";
+        }
+        if (count == 0){
+            reward_gyroscope = reward_gyroscope + 0.0;
+            result_str = "zero";
+        }
 
-            //reward_gyroscope = reward_gyroscope - 5.0 * (current_time/TIME_ITERATION);}
-            reward_gyroscope = reward_gyroscope - 5.0;}
 
-        else  reward_gyroscope = reward_gyroscope + 5.0;
+        if(count < 5  && count != 0) {
+            reward_gyroscope = reward_gyroscope + 5.0;
+            result_str = "balance saved";
+        }
 
     }
   msg.data = reward_gyroscope;
